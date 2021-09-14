@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tomhusky.wechatmvc.server.mapper.UserMapper">
+    <select id="getAccountInfoByName" resultType="com.tomhusky.wechatmvc.server.vo.AccountInfo">
+        select u.username,
+               u.nickname,
+               u.avatar,
+               u.email,
+               u.status,
+               u.mobile,
+               u.user_desc,
+               u.sex,
+               ac.password
+        from sys_user u
+                     left join sys_account ac on u.username = ac.username
+        where u.username = #{username}
+    </select>
+</mapper>
