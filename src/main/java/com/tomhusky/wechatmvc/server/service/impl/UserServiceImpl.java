@@ -12,6 +12,7 @@ import com.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import com.tomhusky.wechatmvc.server.common.util.RedisCache;
 import com.tomhusky.wechatmvc.server.common.util.RedisStringCache;
 import com.tomhusky.wechatmvc.server.common.util.TokenBuild;
+import com.tomhusky.wechatmvc.server.entity.Account;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.mapper.UserMapper;
 import com.tomhusky.wechatmvc.server.service.UserService;
@@ -37,9 +38,6 @@ import java.util.concurrent.TimeUnit;
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
     private RedisCache<String, AccountInfo> redisCache;
 
     @Autowired
@@ -51,10 +49,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         if (userByName != null) {
             throw new RoleException(ExceptionCode.INSERT.getCode(), "用户名已存在");
         }
-        if (StrUtil.isBlank(user.getPassword())) {
-            user.setPassword("123456");
-        }
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return save(user);
     }
 
@@ -67,7 +61,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         if (userById == null) {
             throw new RoleException("用户不存在");
         }
-        user.setPassword(null);
         user.setStatus(null);
         user.setUsername(null);
         boolean update = this.updateById(user);
@@ -118,6 +111,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
+    public Account getAccountByName(String username) {
+        return null;
+    }
+
+    @Override
     public AccountInfo getAccountInfoByName(String username) {
         AccountInfo accountInfo = this.baseMapper.getAccountInfoByName(username);
         if (accountInfo != null) {
@@ -126,52 +124,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         return accountInfo;
     }
 
-    @Override
-    public boolean editUserPassword(Integer userId, String oldPassword, String newPassword) {
-        if (CharSequenceUtil.isBlank(oldPassword) || CharSequenceUtil.isBlank(newPassword)) {
-            throw new RoleException(ExceptionCode.EDIT.getCode(), "密码不能为空");
-        }
-        User user = this.getUserById(userId);
-        if (user == null) {
-            throw new RoleException(ExceptionCode.EDIT.getCode(), "用户不存在");
-        }
-        boolean validPassword = validUserPassword(user.getId(), oldPassword);
-        if (!validPassword) {
-            throw new RoleException(ExceptionCode.EDIT.getCode(), "旧密码校验失败");
-        }
-        if (newPassword.length() < 6) {
-            throw new RoleException(ExceptionCode.EDIT.getCode(), "密码长度要大于6位");
-        }
-        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
-        boolean update = this.updateById(user);
-        if (update) {
-            redisCache.deleteObject(user.getUsername());
-        }
-        return update;
-    }
-
-    @Override
-    public boolean validUserPassword(Integer userId, String password) {
-        User user = this.getUserById(userId);
-        if (user == null) {
-            throw new RoleException(ExceptionCode.DELETE.getCode(), "用户不存在");
-        }
-        return bCryptPasswordEncoder.matches(password, user.getPassword());
-    }
-
-    @Override
-    public boolean resetPassword(Integer userId) {
-        User user = this.getUserById(userId);
-        if (user == null) {
-            throw new RoleException(ExceptionCode.DELETE.getCode(), "用户不存在");
-        }
-        user.setPassword(bCryptPasswordEncoder.encode("123456"));
-        boolean update = this.updateById(user);
-        if (update) {
-            redisCache.deleteObject(user.getUsername());
-        }
-        return update;
-    }
 
     @Override
     public String getToken(String tokenSign) {

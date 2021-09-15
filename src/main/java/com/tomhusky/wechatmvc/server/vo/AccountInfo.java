@@ -51,11 +51,6 @@ public class AccountInfo implements Serializable {
     private String avatar;
 
     /**
-     * 备注
-     */
-    private String remark;
-
-    /**
      * 状态
      */
     @JsonIgnore

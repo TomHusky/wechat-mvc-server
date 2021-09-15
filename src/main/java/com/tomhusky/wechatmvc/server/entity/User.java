@@ -39,11 +39,6 @@ public class User extends AbstractEntity<User> {
     private String nickname;
 
     /**
-     * 密码
-     */
-    private String password;
-
-    /**
      * 邮箱
      */
     private String email;

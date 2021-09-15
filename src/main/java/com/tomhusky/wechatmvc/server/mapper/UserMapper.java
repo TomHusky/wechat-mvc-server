@@ -20,5 +20,4 @@ public interface UserMapper extends BaseDao<User> {
      * @return com.tomhusky.wechatmvc.server.vo.AccountInfo
      */
     AccountInfo getAccountInfoByName(String username);
-
 }

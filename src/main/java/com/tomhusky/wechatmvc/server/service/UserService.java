@@ -2,6 +2,7 @@ package com.tomhusky.wechatmvc.server.service;
 
 
 import com.tomhusky.wechatmvc.server.common.base.BaseService;
+import com.tomhusky.wechatmvc.server.entity.Account;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
 
@@ -72,33 +73,6 @@ public interface UserService extends BaseService<User> {
      * @return com.tomhusky.wechatmvc.server.vo.AccountInfo
      */
     AccountInfo getAccountInfoByName(String username);
-
-    /**
-     * 后台用户修改密码
-     *
-     * @param userId      用户id
-     * @param oldPassword 旧密码
-     * @param newPassword 新密码
-     * @return boolean
-     */
-    boolean editUserPassword(Integer userId, String oldPassword, String newPassword);
-
-    /**
-     * 验证用户密码是否正常
-     *
-     * @param userId   用户id
-     * @param password 密码
-     * @return boolean
-     */
-    boolean validUserPassword(Integer userId, String password);
-
-    /**
-     * 重置密码
-     *
-     * @param userId 目标用户id
-     * @return boolean
-     */
-    boolean resetPassword(Integer userId);
 
     /**
      * 获取redis中token
