@@ -2,11 +2,9 @@ package com.tomhusky.wechatmvc.server.common.exception;
 
 import com.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 
+
 /**
- * @Author: caolei
- * @Despriction:
- * @Date:Created in 2019/4/8 14:52
- * @Modify By:
+ * @author lwj
  */
 public class OperateException extends BaseException {
     private static final Integer CODE = ExceptionCode.OPERATE.getCode();

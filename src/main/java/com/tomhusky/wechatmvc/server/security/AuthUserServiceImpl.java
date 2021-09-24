@@ -36,7 +36,7 @@ public class AuthUserServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户不存在");
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("*/**"));
+        grantedAuthorities.add(new SimpleGrantedAuthority("/*/**"));
         return new JwtUser(accountInfo, grantedAuthorities);
     }
 }

@@ -34,6 +34,11 @@ public class User extends AbstractEntity<User> {
     private String username;
 
     /**
+     * wxid
+     */
+    private String wxid;
+
+    /**
      * 昵称
      */
     private String nickname;
@@ -46,17 +51,12 @@ public class User extends AbstractEntity<User> {
     /**
      * 电话号码
      */
-    private String phone;
+    private String mobile;
 
     /**
      * 头像
      */
     private String avatar;
-
-    /**
-     * 备注
-     */
-    private String remark;
 
     /**
      * 性别
@@ -68,4 +68,8 @@ public class User extends AbstractEntity<User> {
      */
     private Integer status;
 
+    /**
+     * 个性签名
+     */
+    private String signature;
 }

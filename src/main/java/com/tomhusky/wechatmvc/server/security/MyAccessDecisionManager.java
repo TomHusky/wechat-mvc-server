@@ -8,8 +8,11 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
@@ -21,6 +24,9 @@ import java.util.Collection;
 @Component
 @Slf4j
 public class MyAccessDecisionManager implements AccessDecisionManager {
+
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
     /**
      * 取当前用户的权限与这次请求的这个url需要的权限作对比，决定是否放行
      * auth 包含了当前的用户信息，包括拥有的权限,即之前UserDetailsService登录时候存储的用户对象
@@ -29,10 +35,12 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
      **/
     @Override
     public void decide(Authentication auth, Object object, Collection<ConfigAttribute> cas) {
+        if (auth == null) {
+            throw new AccessDeniedException("权限不足");
+        }
+        FilterInvocation filterInvocation = (FilterInvocation) object;
+        String requestUrl = filterInvocation.getRequestUrl();
         for (ConfigAttribute configAttribute : cas) {
-            if (auth == null) {
-                throw new AccessDeniedException("权限不足");
-            }
             //当前请求需要的权限
             String needRole = configAttribute.getAttribute();
             if ("ROLE_LOGIN".equals(needRole) && auth instanceof AnonymousAuthenticationToken) {
@@ -41,7 +49,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             //当前用户所具有的权限
             Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
             for (GrantedAuthority authority : authorities) {
-                if (authority.getAuthority().equals(needRole)) {
+                if (antPathMatcher.match(authority.getAuthority(), requestUrl)) {
                     return;
                 }
             }

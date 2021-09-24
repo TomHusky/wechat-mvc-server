@@ -1,10 +1,12 @@
 package com.tomhusky.wechatmvc.server.common;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,15 @@ public class PageVo<T> implements Serializable {
         return null;
     }
 
+    /**
+     * pageVo转换成分页参数
+     */
+    public static Map<String, Object> coverPageParams(PageVo pageVo) {
+        if (pageVo != null) {
+            return BeanUtil.beanToMap(pageVo);
+        }
+        return Collections.emptyMap();
+    }
 
     /**
      * 初始化分页

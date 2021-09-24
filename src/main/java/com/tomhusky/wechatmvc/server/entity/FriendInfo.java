@@ -47,4 +47,9 @@ public class FriendInfo extends AbstractEntity<FriendInfo> {
      * 免打扰
      */
     private Integer notDisturb;
+
+    /**
+     * 首字母，用于好友排序
+     */
+    private String initial;
 }

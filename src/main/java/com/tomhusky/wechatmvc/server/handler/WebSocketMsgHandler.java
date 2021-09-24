@@ -1,5 +1,6 @@
 package com.tomhusky.wechatmvc.server.handler;
 
+import com.tomhusky.wechatmvc.server.security.SecurityUtils;
 import io.github.tomhusky.websocket.CustomerWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ public class WebSocketMsgHandler implements CustomerWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
         log.info("------------连接成功{}-------------", webSocketSession.getId());
+        String username = SecurityUtils.getUsername();
+        log.info("------------用户{}-------------", username);
     }
 
     @Override

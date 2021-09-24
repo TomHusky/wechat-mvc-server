@@ -41,6 +41,11 @@ public class GroupChat extends AbstractEntity<GroupChat> {
      */
     private String groupNo;
 
+    /**
+     * 群公告
+     */
+    private String notice;
+
 
     @Override
     protected Serializable pkVal() {

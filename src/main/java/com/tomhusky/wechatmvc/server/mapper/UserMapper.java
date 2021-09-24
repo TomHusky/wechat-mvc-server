@@ -1,6 +1,6 @@
 package com.tomhusky.wechatmvc.server.mapper;
 
-import com.tomhusky.wechatmvc.server.common.base.BaseDao;
+import com.tomhusky.wechatmvc.server.common.base.CommonMapper;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
 
@@ -11,7 +11,7 @@ import com.tomhusky.wechatmvc.server.vo.AccountInfo;
  * @version：1.0
  * @description: 用户mapper
  */
-public interface UserMapper extends BaseDao<User> {
+public interface UserMapper extends CommonMapper<User> {
 
     /**
      * 根据用户名获取用户登录信息

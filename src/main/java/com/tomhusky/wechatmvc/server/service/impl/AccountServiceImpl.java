@@ -2,6 +2,7 @@ package com.tomhusky.wechatmvc.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.IdUtil;
 import com.tomhusky.wechatmvc.server.common.exception.RoleException;
 import com.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import com.tomhusky.wechatmvc.server.entity.Account;
@@ -38,7 +39,8 @@ public class AccountServiceImpl implements AccountService {
         boolean insert = account.insert();
         if (insert) {
             User user = new User();
-            BeanUtil.copyProperties(addAccountVo,user);
+            user.setWxid(account.getUsername() + IdUtil.nanoId(4));
+            BeanUtil.copyProperties(addAccountVo, user);
             userService.addUser(user);
         }
         return insert;

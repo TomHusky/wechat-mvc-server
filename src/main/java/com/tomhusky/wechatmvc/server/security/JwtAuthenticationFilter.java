@@ -1,5 +1,6 @@
 package com.tomhusky.wechatmvc.server.security;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.tomhusky.wechatmvc.server.common.exception.JwtException;
 import com.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
@@ -42,11 +43,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException, ServletException {
         String tokenHeader = request.getHeader(TokenBuild.TOKEN_HEADER);
         // 如果请求头中没有Authorization信息则直接放行了
-        if (tokenHeader == null || StrUtil.isBlank(tokenHeader)) {
+        if (tokenHeader == null || CharSequenceUtil.isBlank(tokenHeader)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -71,7 +75,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader) {
         String token = tokenHeader.replace(TokenBuild.TOKEN_PREFIX, "");
         try {
-            Object username = TokenBuild.getPayloads(token, "username");
+            String redisToken = userService.getToken(token);
+            if (redisToken == null) {
+                throw new JwtException(ExceptionCode.TOKEN_EXPIRE.getCode(), ExceptionCode.TOKEN_EXPIRE.getMsg());
+            }
+            Object username = TokenBuild.getPayloads(redisToken, "username");
             if (username != null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(username));
                 if (userDetails != null) {

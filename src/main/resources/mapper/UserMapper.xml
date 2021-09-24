@@ -8,7 +8,7 @@
                u.email,
                u.status,
                u.mobile,
-               u.user_desc,
+               u.signature,
                u.sex,
                ac.password
         from sys_user u

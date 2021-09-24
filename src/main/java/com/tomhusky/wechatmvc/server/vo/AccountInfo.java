@@ -43,7 +43,7 @@ public class AccountInfo implements Serializable {
     /**
      * 电话号码
      */
-    private String phone;
+    private String mobile;
 
     /**
      * 头像
@@ -61,4 +61,6 @@ public class AccountInfo implements Serializable {
      * 性别
      */
     private Integer sex;
+
+    private String signature;
 }

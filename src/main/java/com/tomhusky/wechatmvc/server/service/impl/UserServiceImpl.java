@@ -1,7 +1,6 @@
 package com.tomhusky.wechatmvc.server.service.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
@@ -12,13 +11,11 @@ import com.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import com.tomhusky.wechatmvc.server.common.util.RedisCache;
 import com.tomhusky.wechatmvc.server.common.util.RedisStringCache;
 import com.tomhusky.wechatmvc.server.common.util.TokenBuild;
-import com.tomhusky.wechatmvc.server.entity.Account;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.mapper.UserMapper;
 import com.tomhusky.wechatmvc.server.service.UserService;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,12 +108,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public Account getAccountByName(String username) {
-        return null;
-    }
-
-    @Override
     public AccountInfo getAccountInfoByName(String username) {
+        AccountInfo cacheObject = redisCache.getCacheObject(username);
+        if (cacheObject != null) {
+            return cacheObject;
+        }
         AccountInfo accountInfo = this.baseMapper.getAccountInfoByName(username);
         if (accountInfo != null) {
             redisCache.setCacheObject(username, accountInfo);
