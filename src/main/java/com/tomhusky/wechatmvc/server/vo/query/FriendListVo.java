@@ -59,6 +59,11 @@ public class FriendListVo {
     private String remark;
 
     /**
+     * 地址
+     */
+    private String area;
+
+    /**
      * 好友来源
      */
     private String origin;

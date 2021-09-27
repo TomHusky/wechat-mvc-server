@@ -72,4 +72,9 @@ public class User extends AbstractEntity<User> {
      * 个性签名
      */
     private String signature;
+
+    /**
+     * 地址
+     */
+    private String area;
 }
