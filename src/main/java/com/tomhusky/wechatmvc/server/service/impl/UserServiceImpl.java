@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -62,7 +63,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         user.setUsername(null);
         boolean update = this.updateById(user);
         if (update) {
-            redisCache.deleteObject(user.getUsername());
+            redisCache.deleteObject(RedisCacheName.LOGIN_USER + user.getUsername());
         }
         return update;
     }
@@ -77,7 +78,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             }
             boolean remove = removeById(userId);
             if (remove) {
-                redisCache.deleteObject(user.getUsername());
+                redisCache.deleteObject(RedisCacheName.LOGIN_USER + user.getUsername());
             }
             return remove;
         }
@@ -109,13 +110,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Override
     public AccountInfo getAccountInfoByName(String username) {
-        AccountInfo cacheObject = redisCache.getCacheObject(username);
+        AccountInfo cacheObject = redisCache.getCacheObject(RedisCacheName.LOGIN_USER + username);
         if (cacheObject != null) {
             return cacheObject;
         }
         AccountInfo accountInfo = this.baseMapper.getAccountInfoByName(username);
         if (accountInfo != null) {
-            redisCache.setCacheObject(username, accountInfo);
+            redisCache.setCacheObject(RedisCacheName.LOGIN_USER + username, accountInfo);
         }
         return accountInfo;
     }
@@ -127,7 +128,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         if (CharSequenceUtil.isNotEmpty(cacheObject)) {
             String refreshToken = TokenBuild.refresh(cacheObject);
             if (refreshToken != null) {
-                tokenCache.setCacheObject(tokenSign, refreshToken, 1, TimeUnit.DAYS);
+                tokenCache.setCacheObject(RedisCacheName.LOGIN_TOKEN + tokenSign, refreshToken, 1, TimeUnit.HOURS);
             }
         }
         return cacheObject;
@@ -136,8 +137,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     @Override
     public String cacheToken(String token) {
         String md5 = MD5.create().digestHex(token);
-        tokenCache.setCacheObject(RedisCacheName.LOGIN_TOKEN + md5, token, 1, TimeUnit.DAYS);
+        tokenCache.setCacheObject(RedisCacheName.LOGIN_TOKEN + md5, token, 1, TimeUnit.HOURS);
         return md5;
+    }
+
+    @Override
+    public void removeToken(String tokenSign) {
+        tokenCache.deleteObject(RedisCacheName.LOGIN_TOKEN + tokenSign);
     }
 
 }

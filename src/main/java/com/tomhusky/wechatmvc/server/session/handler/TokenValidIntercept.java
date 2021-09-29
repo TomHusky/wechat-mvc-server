@@ -1,4 +1,4 @@
-package com.tomhusky.wechatmvc.server.handler;
+package com.tomhusky.wechatmvc.server.session.handler;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.tomhusky.wechatmvc.server.common.exception.JwtException;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenValidIntercept extends LoginValidIntercept {
 
-    private static final String TOKEN_HEAD = "Authorization";
+    public static final String TOKEN_HEAD = "Authorization";
 
     @Autowired
     private UserService userService;

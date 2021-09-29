@@ -17,4 +17,9 @@ public class RedisCacheName {
      * 登录token缓存前缀
      */
     public static final String LOGIN_TOKEN = "user:token:";
+
+    /**
+     * 登录token缓存前缀
+     */
+    public static final String LOGIN_USER = "user:info:";
 }

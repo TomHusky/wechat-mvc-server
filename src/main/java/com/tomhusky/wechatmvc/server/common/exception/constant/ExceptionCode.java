@@ -3,6 +3,7 @@ package com.tomhusky.wechatmvc.server.common.exception.constant;
 /**
  * rpc异常code
  *
+ * @author lwj
  */
 public enum ExceptionCode {
     /**
@@ -19,7 +20,8 @@ public enum ExceptionCode {
     API_VERSION(-10, "api版本校验失败"),
     SMS(-11, "短信发送失败"),
     OUT_PACKET(-12, "出袋异常"),
-    UNAUTHORIZED(-403, "未授权"),
+    UNAUTHORIZED(-403, "token失效或过期"),
+    FORBIDDEN(-401, "未授权"),
     VALID_USER(-1001, "加载第三方授权数据失败"),
     WX_CONFIG_ERROR(-1002, "加载微信配置文件错误"),
     SHORT_URL(-2001, "百度短链接获取失败"),
@@ -34,8 +36,8 @@ public enum ExceptionCode {
     TOKEN_ERROR(-9002, "TOKEN错误");
 
 
-    private Integer code;
-    private String msg;
+    private final Integer code;
+    private final String msg;
 
     ExceptionCode(Integer code, String msg) {
         this.code = code;

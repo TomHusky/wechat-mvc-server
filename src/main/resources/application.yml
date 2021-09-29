@@ -34,5 +34,5 @@ mybatis-plus:
   type-aliases-package: com.tomhusky.wechatmvc.server.*.entity
 
 web-socket-mvc:
-  basePackage: com.tomhusky.wechatmvc.server.controller
+  basePackage: com.tomhusky.wechatmvc.server.session.controller
   enable-valid: true

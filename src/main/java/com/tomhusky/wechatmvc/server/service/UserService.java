@@ -89,4 +89,11 @@ public interface UserService extends BaseService<User> {
      * @return java.lang.String
      */
     String cacheToken(String token);
+
+    /**
+     * 退出登录移除token
+     *
+     * @param tokenSign md5之后的token
+     */
+    void removeToken(String tokenSign);
 }

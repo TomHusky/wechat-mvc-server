@@ -1,6 +1,5 @@
 package com.tomhusky.wechatmvc.server.vo;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -32,7 +31,6 @@ public class AccountInfo implements Serializable {
      * 密码
      */
     @JsonIgnore
-    @JSONField(serialize = false)
     private String password;
 
     /**
@@ -54,7 +52,6 @@ public class AccountInfo implements Serializable {
      * 状态
      */
     @JsonIgnore
-    @JSONField(serialize = false)
     private Integer status;
 
     /**

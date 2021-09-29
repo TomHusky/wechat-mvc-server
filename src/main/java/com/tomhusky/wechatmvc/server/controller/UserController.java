@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * 用户接口
+ *
  * @author luowj
- * @className: UserController
- * @date 2021/9/15 11:31
- * @version：1.0
- * @description: 用户接口
+ * @since  2021/9/15 11:31
  */
 @RequestMapping("user")
 @RestController

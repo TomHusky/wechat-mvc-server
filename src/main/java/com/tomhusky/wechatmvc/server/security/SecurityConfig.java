@@ -4,17 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 
 /**
@@ -51,6 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     private MyAccessDeniedHandler myAccessDeniedHandler;
+
+    /**
+     * 退出登录处理
+     */
+    @Autowired
+    private MyLogoutSuccessHandler myLogoutSuccessHandler;
 
 
     @Autowired
@@ -102,18 +111,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and()
                 // 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable()
-                .logout().disable()
                 // 使用 JWT，关闭session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // 所有请求必须认证
                 .and()
                 .authorizeRequests()
+                //处理跨域请求中的Preflight请求
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                //跨域请求会先进行一次options请求
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest()
                 // RBAC 动态 url 认证
                 .access("@rbacauthorityservice.hasPermission(request,authentication)");
         // 无权访问 JSON 格式的数据
         httpSecurity.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
         httpSecurity.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler);
+        httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(myLogoutSuccessHandler);
         httpSecurity.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
             @Override
             public <O extends FilterSecurityInterceptor> O postProcess(O o) {
