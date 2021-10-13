@@ -1,7 +1,6 @@
 package com.tomhusky.wechatmvc.server.service.impl;
 
 import com.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
-import com.tomhusky.wechatmvc.server.common.exception.BaseException;
 import com.tomhusky.wechatmvc.server.common.exception.DateNoneException;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.entity.UserRelation;

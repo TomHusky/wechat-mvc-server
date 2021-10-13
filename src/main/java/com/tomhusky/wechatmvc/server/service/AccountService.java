@@ -1,5 +1,7 @@
 package com.tomhusky.wechatmvc.server.service;
 
+import com.tomhusky.wechatmvc.server.common.base.BaseService;
+import com.tomhusky.wechatmvc.server.entity.Account;
 import com.tomhusky.wechatmvc.server.vo.add.AddAccountVo;
 
 /**
@@ -9,15 +11,15 @@ import com.tomhusky.wechatmvc.server.vo.add.AddAccountVo;
  * @version：1.0
  * @description: 账号服务接口
  */
-public interface AccountService {
+public interface AccountService extends BaseService<Account> {
 
     /**
      * 添加账号
      *
      * @param addAccountVo: 账号信息
-     * @return boolean
+     * @return java.lang.Integer 返回当前用户的数量
      */
-    boolean addAccount(AddAccountVo addAccountVo);
+    Integer addAccount(AddAccountVo addAccountVo);
 
     /**
      * 后台用户修改密码

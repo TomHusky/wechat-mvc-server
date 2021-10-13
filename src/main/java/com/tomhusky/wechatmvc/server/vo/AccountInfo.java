@@ -23,6 +23,11 @@ public class AccountInfo implements Serializable {
     private String username;
 
     /**
+     * wxid
+     */
+    private String wxid;
+
+    /**
      * 昵称
      */
     private String nickname;

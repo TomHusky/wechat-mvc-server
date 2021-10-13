@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -96,9 +95,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Override
     public User getUserById(Integer userId) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(User::getId, userId);
-        return this.getOne(queryWrapper);
+        return this.lambdaQuery().eq(User::getId, userId).last("limit 1").one();
+    }
+
+    @Override
+    public User getByWxid(String wxid) {
+        return this.lambdaQuery().eq(User::getWxid, wxid).last("limit 1").one();
     }
 
     @Override
@@ -106,6 +108,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(User::getUsername, username);
         return this.getOne(queryWrapper);
+    }
+
+    @Override
+    public boolean emailExit(String email) {
+        return this.lambdaQuery().eq(User::getEmail, email).one() != null;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class GroupChatUser extends AbstractEntity<GroupChatUser> {
     /**
      * 类型 0 群主 1 普通 2管理员
      */
-    private Boolean type;
+    private Integer type;
 
     /**
      * 用户id

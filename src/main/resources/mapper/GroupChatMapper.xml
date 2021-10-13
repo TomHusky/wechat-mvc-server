@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tomhusky.wechatmvc.server.mapper.GroupChatMapper">
+    <select id="listGroupChatUserInfo" resultType="com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail">
+        select su.wxid,
+               su.signature,
+               su.sex,
+               su.avatar,
+               su.nickname,
+               su.area
+        from group_chat gc
+                     left join group_chat_user gcu on gc.group_no = gcu.group_no
+                     left join sys_user su on su.id = gcu.user_id
+        where gc.deleted = 0
+          and gc.group_no = #{groupNo}
+    </select>
 
+    <select id="listGroupChatByUser" resultType="com.tomhusky.wechatmvc.server.entity.GroupChat">
+        select gc.*
+        from group_chat gc
+                     left join group_chat_user gcu
+                on gc.group_no = gcu.group_no
+        where gc.deleted = 0
+          and gcu.user_id = #{userId}
+    </select>
 </mapper>

@@ -59,12 +59,28 @@ public interface UserService extends BaseService<User> {
     User getUserById(Integer userId);
 
     /**
+     * 根据wxid获取用户
+     *
+     * @param wxid wxid
+     * @return com.tomhusky.wechatmvc.server.entity.User
+     */
+    User getByWxid(String wxid);
+
+    /**
      * 根据用户名获取用户信息
      *
      * @param username 用户名
      * @return cn.greenbon.api.business.system.bean.User
      */
     User getUserByName(String username);
+
+    /**
+     * 判断电子邮箱是否已经存在
+     *
+     * @param email 邮箱地址
+     * @return boolean
+     */
+    boolean emailExit(String email);
 
     /**
      * 根据用户名获取用户登录信息

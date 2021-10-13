@@ -98,6 +98,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/websocket")
                 .antMatchers("/webjars/**")
                 .antMatchers("/swagger-resources/**");
+        web.ignoring().antMatchers("/email/sendVerCode")
+                .antMatchers("/account/**");
     }
 
     /**

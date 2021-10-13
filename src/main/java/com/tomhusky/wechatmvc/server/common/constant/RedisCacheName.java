@@ -14,12 +14,17 @@ public class RedisCacheName {
     }
 
     /**
-     * 登录token缓存前缀
+     * 登录token缓存
      */
     public static final String LOGIN_TOKEN = "user:token:";
 
     /**
-     * 登录token缓存前缀
+     * 登录用户信息缓存
      */
     public static final String LOGIN_USER = "user:info:";
+
+    /**
+     * 邮件验证码缓存
+     */
+    public static final String EMAIL_CODE = "code:ver:";
 }
