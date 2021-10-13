@@ -15,6 +15,7 @@ import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.mapper.UserMapper;
 import com.tomhusky.wechatmvc.server.service.UserService;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
+import com.tomhusky.wechatmvc.server.vo.query.SelectUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,6 +109,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(User::getUsername, username);
         return this.getOne(queryWrapper);
+    }
+
+    @Override
+    public SelectUserVo selectUser(String value) {
+        return this.baseMapper.selectUser(value);
     }
 
     @Override

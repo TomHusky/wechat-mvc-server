@@ -3,6 +3,7 @@ package com.tomhusky.wechatmvc.server.mapper;
 import com.tomhusky.wechatmvc.server.common.base.CommonMapper;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
+import com.tomhusky.wechatmvc.server.vo.query.SelectUserVo;
 
 /**
  * @author luowj
@@ -20,4 +21,12 @@ public interface UserMapper extends CommonMapper<User> {
      * @return com.tomhusky.wechatmvc.server.vo.AccountInfo
      */
     AccountInfo getAccountInfoByName(String username);
+
+    /**
+     * 查找用户，用于添加好友
+     *
+     * @param value 用户名或wxid
+     * @return com.tomhusky.wechatmvc.server.vo.query.SelectUserVo
+     */
+    SelectUserVo selectUser(String value);
 }

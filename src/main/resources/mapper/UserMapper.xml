@@ -15,4 +15,17 @@
                      left join sys_account ac on u.username = ac.username
         where u.username = #{username}
     </select>
+
+    <select id="selectUser" resultType="com.tomhusky.wechatmvc.server.vo.query.SelectUserVo">
+        select su.username,
+               su.nickname,
+               su.avatar,
+               su.sex,
+               su.signature,
+               su.wxid,
+               su.area
+        from sys_user su
+        where su.username = #{value}
+           or su.wxid = #{value}
+    </select>
 </mapper>

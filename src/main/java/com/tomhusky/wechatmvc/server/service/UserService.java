@@ -5,6 +5,7 @@ import com.tomhusky.wechatmvc.server.common.base.BaseService;
 import com.tomhusky.wechatmvc.server.entity.Account;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
+import com.tomhusky.wechatmvc.server.vo.query.SelectUserVo;
 
 import java.util.List;
 
@@ -73,6 +74,14 @@ public interface UserService extends BaseService<User> {
      * @return cn.greenbon.api.business.system.bean.User
      */
     User getUserByName(String username);
+
+    /**
+     * 查找用户，用于添加好友
+     *
+     * @param value 用户名或wxid
+     * @return com.tomhusky.wechatmvc.server.vo.query.SelectUserVo
+     */
+    SelectUserVo selectUser(String value);
 
     /**
      * 判断电子邮箱是否已经存在

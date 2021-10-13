@@ -22,4 +22,5 @@
                      left join sys_friend_info sfi on sfi.related_id = sur.id and sfi.deleted = 0
         where sur.user_id = #{userId,jdbcType=INTEGER}
     </select>
+
 </mapper>

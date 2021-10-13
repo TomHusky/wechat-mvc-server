@@ -27,7 +27,6 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelationMapper,
     @Autowired
     private UserService userService;
 
-
     @Override
     public List<FriendListVo> listAllFriendInfo(String username) {
         User user = userService.getUserByName(username);
