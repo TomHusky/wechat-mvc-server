@@ -1,11 +1,10 @@
 package com.tomhusky.wechatmvc.server.session;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.tomhusky.websocket.SocketSessionManager;
 import io.github.tomhusky.websocket.bean.SocketResult;
-import io.github.tomhusky.websocket.util.FastJsonUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.socket.TextMessage;
 
 import java.util.Collection;
 import java.util.Map;
@@ -33,9 +32,9 @@ public class OnlineUserManage {
         WEB_SOCKET_SESSION_MAP.computeIfAbsent(username, k -> sessionId);
     }
 
-    public static String remove(String key) {
-        String sessionId = WEB_SOCKET_SESSION_MAP.get(key);
-        WEB_SOCKET_SESSION_MAP.remove(key);
+    public static String remove(String username) {
+        String sessionId = WEB_SOCKET_SESSION_MAP.get(username);
+        WEB_SOCKET_SESSION_MAP.remove(username);
         return sessionId;
     }
 
@@ -46,8 +45,12 @@ public class OnlineUserManage {
         }
     }
 
-    public static String get(String key) {
-        return WEB_SOCKET_SESSION_MAP.get(key);
+    public static String get(String username) {
+        return WEB_SOCKET_SESSION_MAP.get(username);
+    }
+
+    public static boolean isOnline(String username) {
+        return WEB_SOCKET_SESSION_MAP.containsKey(username);
     }
 
     public static String getKey(String value) {
@@ -60,10 +63,10 @@ public class OnlineUserManage {
         return null;
     }
 
-    public static <T> boolean sendMessages(String username, T data) {
+    public static <T> boolean sendMessages(String address,String username, T data) {
         String sessionId = WEB_SOCKET_SESSION_MAP.get(username);
-        if (StrUtil.isNotBlank(sessionId)) {
-            return SocketSessionManager.sendMessages(sessionId, SocketResult.build(data,"/msg/receive"));
+        if (CharSequenceUtil.isNotBlank(sessionId)) {
+            return SocketSessionManager.sendMessages(sessionId, SocketResult.build(data, address));
         }
         return false;
     }

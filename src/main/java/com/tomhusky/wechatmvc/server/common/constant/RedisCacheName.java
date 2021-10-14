@@ -27,4 +27,9 @@ public class RedisCacheName {
      * 邮件验证码缓存
      */
     public static final String EMAIL_CODE = "code:ver:";
+
+    /**
+     * 好友申请缓存
+     */
+    public static final String FRIEND_APPLY = "friend:apply:";
 }

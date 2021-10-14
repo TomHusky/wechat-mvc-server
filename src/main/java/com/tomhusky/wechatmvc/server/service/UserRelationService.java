@@ -1,6 +1,7 @@
 package com.tomhusky.wechatmvc.server.service;
 
 import com.tomhusky.wechatmvc.server.common.base.BaseService;
+import com.tomhusky.wechatmvc.server.entity.FriendApply;
 import com.tomhusky.wechatmvc.server.entity.UserRelation;
 import com.tomhusky.wechatmvc.server.vo.query.FriendListVo;
 
@@ -21,4 +22,12 @@ public interface UserRelationService extends BaseService<UserRelation> {
      * @return java.util.List<com.tomhusky.wechatmvc.server.vo.query.FriendListVo>
      */
     List<FriendListVo> listAllFriendInfo(String username);
+
+    /**
+     * 添加好友关系
+     *
+     * @param friendApply 好友申请信息
+     * @return boolean
+     */
+    boolean addFriend(FriendApply friendApply);
 }

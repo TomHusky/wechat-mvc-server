@@ -81,9 +81,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             Object username = TokenBuild.getPayloads(redisToken, "username");
             if (username != null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(username));
-                if (userDetails != null) {
-                    return new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
+                JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(String.valueOf(username));
+                if (jwtUser != null) {
+                    return new UsernamePasswordAuthenticationToken(jwtUser, null, jwtUser.getAuthorities());
                 }
             }
 //        } catch (ExpiredJwtException e) {

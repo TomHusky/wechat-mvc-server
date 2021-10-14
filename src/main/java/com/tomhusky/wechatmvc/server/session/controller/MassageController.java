@@ -3,6 +3,7 @@ package com.tomhusky.wechatmvc.server.session.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.tomhusky.wechatmvc.server.common.JsonResult;
 import com.tomhusky.wechatmvc.server.common.enums.MsgType;
+import com.tomhusky.wechatmvc.server.common.enums.MsgUrlType;
 import com.tomhusky.wechatmvc.server.session.OnlineUserManage;
 import com.tomhusky.wechatmvc.server.session.UserSessionDetail;
 import com.tomhusky.wechatmvc.server.session.vo.ReceiveMsgVo;
@@ -21,7 +22,7 @@ import io.github.tomhusky.websocket.context.WebSocketContextHolder;
  * @version 1.0
  * @since 2021/9/27 17:29
  */
-@SocketRequestMapping("/msg")
+@SocketRequestMapping("/chat")
 @SocketController
 public class MassageController {
 
@@ -33,7 +34,7 @@ public class MassageController {
         ReceiveMsgVo receiveMsgVo = BeanUtil.copyProperties(sendMsgVo, ReceiveMsgVo.class);
         receiveMsgVo.setUsername(sessionDetail.getUsername());
         if (MsgType.FRIEND.getValue() == sendMsgVo.getMsgType()) {
-            OnlineUserManage.sendMessages(sendMsgVo.getReceiveId(), JsonResult.success(receiveMsgVo));
+            OnlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), sendMsgVo.getReceiveId(), JsonResult.success(receiveMsgVo));
         }
         return JsonResult.success("ok");
     }

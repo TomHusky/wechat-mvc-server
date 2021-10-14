@@ -1,8 +1,11 @@
 package com.tomhusky.wechatmvc.server.security;
 
 import com.tomhusky.wechatmvc.server.common.exception.AuthException;
+import com.tomhusky.wechatmvc.server.vo.AccountInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -35,7 +38,14 @@ public class SecurityUtils {
      */
     public static JwtUser getLoginUser() {
         try {
-            return (JwtUser) getAuthentication().getPrincipal();
+            Authentication authentication = getAuthentication();
+            if (authentication.getPrincipal() instanceof JwtUser) {
+                return (JwtUser) authentication.getPrincipal();
+            }else {
+                AccountInfo accountInfo = new AccountInfo();
+                accountInfo.setUsername(authentication.getName());
+                return new JwtUser(accountInfo);
+            }
         } catch (Exception e) {
             throw new AuthException("获取用户信息异常");
         }

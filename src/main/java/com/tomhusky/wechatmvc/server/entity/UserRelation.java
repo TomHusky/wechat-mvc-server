@@ -7,6 +7,7 @@ import com.tomhusky.wechatmvc.server.common.base.AbstractEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * @author lwj
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@Accessors(chain = true)
 @TableName("sys_user_relation")
 public class UserRelation extends AbstractEntity<UserRelation> {
 

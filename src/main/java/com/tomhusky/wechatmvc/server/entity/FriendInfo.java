@@ -7,6 +7,7 @@ import com.tomhusky.wechatmvc.server.common.base.AbstractEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * @author lwj
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
 @NoArgsConstructor
 @TableName("sys_friend_info")
 public class FriendInfo extends AbstractEntity<FriendInfo> {
@@ -31,17 +33,17 @@ public class FriendInfo extends AbstractEntity<FriendInfo> {
     /**
      * 备注
      */
-    private Integer remark;
+    private String remark;
 
     /**
      * 好友来源
      */
-    private Integer origin;
+    private String origin;
 
     /**
      * 标签
      */
-    private Integer label;
+    private String label;
 
     /**
      * 免打扰

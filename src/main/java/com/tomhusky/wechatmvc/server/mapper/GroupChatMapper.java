@@ -1,8 +1,7 @@
 package com.tomhusky.wechatmvc.server.mapper;
 
-import com.tomhusky.wechatmvc.server.entity.GroupChat;
 import com.tomhusky.wechatmvc.server.common.base.CommonMapper;
-import com.tomhusky.wechatmvc.server.vo.query.GroupChatListVo;
+import com.tomhusky.wechatmvc.server.entity.GroupChat;
 import com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail;
 import org.apache.ibatis.annotations.Mapper;
 

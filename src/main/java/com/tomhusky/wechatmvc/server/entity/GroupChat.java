@@ -1,16 +1,13 @@
 package com.tomhusky.wechatmvc.server.entity;
 
-import com.tomhusky.wechatmvc.server.common.base.AbstractEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.tomhusky.wechatmvc.server.common.base.AbstractEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @author lwj
