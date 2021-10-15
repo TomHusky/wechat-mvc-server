@@ -1,12 +1,9 @@
 package com.tomhusky.wechatmvc.server.service.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.pinyin.PinyinUtil;
 import com.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
-import com.tomhusky.wechatmvc.server.common.constant.RedisCacheName;
 import com.tomhusky.wechatmvc.server.common.exception.DateNoneException;
-import com.tomhusky.wechatmvc.server.common.util.RedisCache;
 import com.tomhusky.wechatmvc.server.entity.FriendApply;
 import com.tomhusky.wechatmvc.server.entity.FriendInfo;
 import com.tomhusky.wechatmvc.server.entity.User;
@@ -48,6 +45,11 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelationMapper,
     }
 
     @Override
+    public FriendListVo getFriendInfo(Integer userId,Integer friendId) {
+        return mapper.getFriendInfo(userId, friendId);
+    }
+
+    @Override
     public boolean addFriend(FriendApply friendApply) {
         User applyUser = userService.getUserByName(friendApply.getApplyUser());
         User receiveUser = userService.getUserByName(friendApply.getReceiveUser());
@@ -59,7 +61,7 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelationMapper,
                 setUserId(applyUser.getId()).setFriendId(receiveUser.getId());
         // 被添加好友
         UserRelation toRelation = new UserRelation().
-                setUserId(receiveUser.getId()).setFriendId(receiveUser.getId());
+                setUserId(receiveUser.getId()).setFriendId(applyUser.getId());
 
         this.save(fromRelation);
         this.save(toRelation);
@@ -76,10 +78,10 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelationMapper,
             applyFriendInfo.setInitial(CharSequenceUtil.upperFirst(firstLetter));
         }
 
-        FriendInfo receiveFriendInfo = new FriendInfo().setRelatedId(toRelation.getId())
+        FriendInfo receiveFriendInfo = new FriendInfo().setRelatedId(toRelation.getId()).setRemark(applyUser.getNickname())
                 .setOrigin(friendApply.getOrigin());
 
-        String firstLetter = PinyinUtil.getFirstLetter(receiveUser.getNickname().substring(0, 1), ",");
+        String firstLetter = PinyinUtil.getFirstLetter(receiveFriendInfo.getRemark().substring(0, 1), ",");
         receiveFriendInfo.setInitial(CharSequenceUtil.upperFirst(firstLetter));
 
 

@@ -2,9 +2,11 @@ package com.tomhusky.wechatmvc.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
+import com.tomhusky.wechatmvc.server.common.JsonResult;
 import com.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
 import com.tomhusky.wechatmvc.server.common.enums.ApplyStatus;
 import com.tomhusky.wechatmvc.server.common.enums.MsgUrlType;
+import com.tomhusky.wechatmvc.server.common.exception.DateNoneException;
 import com.tomhusky.wechatmvc.server.common.exception.OperateException;
 import com.tomhusky.wechatmvc.server.entity.FriendApply;
 import com.tomhusky.wechatmvc.server.entity.User;
@@ -16,11 +18,16 @@ import com.tomhusky.wechatmvc.server.service.UserService;
 import com.tomhusky.wechatmvc.server.session.OnlineUserManage;
 import com.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
 import com.tomhusky.wechatmvc.server.vo.msg.AddFriendMsg;
+import com.tomhusky.wechatmvc.server.vo.query.FriendListVo;
 import com.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -43,6 +50,23 @@ public class FriendApplyServiceImpl extends BaseServiceImpl<FriendApplyMapper, F
     private UserRelationService userRelationService;
 
     @Override
+    public boolean sendAllFriendApplyMsg(String username) {
+        List<FriendApply> friendApplies = listAllFriendApply(username);
+        if (friendApplies.isEmpty()) {
+            return true;
+        }
+        sendMsg(friendApplies, username);
+        return true;
+    }
+
+    @Override
+    public List<FriendApply> listAllFriendApply(String username) {
+        return this.lambdaQuery().eq(FriendApply::getReceiveUser, username)
+                .eq(FriendApply::getStatus, ApplyStatus.APPLYING.getValue())
+                .list();
+    }
+
+    @Override
     public Boolean applyAddFriend(AddFriendVo addFriendVo) {
         String username = SecurityUtils.getUsername();
         FriendApply friendApply = new FriendApply();
@@ -57,13 +81,23 @@ public class FriendApplyServiceImpl extends BaseServiceImpl<FriendApplyMapper, F
         this.save(friendApply);
 
         if (OnlineUserManage.isOnline(username)) {
-            User userByName = userService.getUserByName(username);
-            AddFriendMsg addFriendMsg = BeanUtil.copyProperties(userByName, AddFriendMsg.class);
-            addFriendMsg.setApplyId(friendApply.getApplyId());
-            addFriendMsg.setInfo(addFriendVo.getInfo());
-            OnlineUserManage.sendMessages(MsgUrlType.NEW_FRIEND_MSG.getUrl(), username, addFriendMsg);
+            friendApply.setStatus(ApplyStatus.APPLYING.getValue());
+            sendMsg(Collections.singletonList(friendApply), friendApply.getReceiveUser());
         }
         return true;
+    }
+
+    private void sendMsg(List<FriendApply> friendApplyList, String username) {
+        List<AddFriendMsg> addFriendMsgList = new ArrayList<>();
+        for (FriendApply friendApply : friendApplyList) {
+            User userByName = userService.getUserByName(friendApply.getApplyUser());
+            AddFriendMsg addFriendMsg = BeanUtil.copyProperties(userByName, AddFriendMsg.class);
+            addFriendMsg.setApplyId(friendApply.getApplyId());
+            addFriendMsg.setInfo(friendApply.getApplyInfo());
+            addFriendMsg.setStatus(friendApply.getStatus());
+            addFriendMsgList.add(addFriendMsg);
+        }
+        OnlineUserManage.sendMessages(MsgUrlType.NEW_FRIEND_MSG.getUrl(), username, JsonResult.success(addFriendMsgList));
     }
 
     @Override
@@ -73,11 +107,24 @@ public class FriendApplyServiceImpl extends BaseServiceImpl<FriendApplyMapper, F
             throw new OperateException("申请不存在");
         }
         if (applyUpdate.getStatus().equals(ApplyStatus.Added.getValue())) {
-            //TODO 添加成功
             userRelationService.addFriend(friendApply);
+            // 发送添加好友消息
+            sendAddFriendMsg(friendApply);
         }
-        friendApply.setStatus(friendApply.getApplyId());
+        friendApply.setStatus(applyUpdate.getStatus());
         return updateById(friendApply);
+    }
+
+    private void sendAddFriendMsg(FriendApply friendApply) {
+        User user = userService.getUserByName(friendApply.getApplyUser());
+        User friend = userService.getUserByName(friendApply.getReceiveUser());
+        if (user == null || friend == null) {
+            throw new DateNoneException("用户不存在");
+        }
+        FriendListVo applyUser = userRelationService.getFriendInfo(user.getId(), friend.getId());
+        FriendListVo receiveUser = userRelationService.getFriendInfo(friend.getId(), user.getId());
+        OnlineUserManage.sendMessages(MsgUrlType.ADD_FRIEND_MSG.getUrl(), friendApply.getApplyUser(), JsonResult.success(applyUser));
+        OnlineUserManage.sendMessages(MsgUrlType.ADD_FRIEND_MSG.getUrl(), friendApply.getReceiveUser(), JsonResult.success(receiveUser));
     }
 
 }

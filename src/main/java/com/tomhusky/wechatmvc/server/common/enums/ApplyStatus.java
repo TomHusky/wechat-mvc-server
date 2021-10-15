@@ -10,7 +10,7 @@ package com.tomhusky.wechatmvc.server.common.enums;
  * @since 2021/10/14 11:34
  */
 public enum ApplyStatus {
-    APPLYING(1, "申请中"),
+    APPLYING(0, "申请中"),
     Added(1, "已添加"),
     refuse(2, "拒绝");
     private final Integer value;

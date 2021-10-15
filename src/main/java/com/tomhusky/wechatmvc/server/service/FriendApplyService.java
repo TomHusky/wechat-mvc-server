@@ -3,7 +3,10 @@ package com.tomhusky.wechatmvc.server.service;
 import com.tomhusky.wechatmvc.server.common.base.BaseService;
 import com.tomhusky.wechatmvc.server.entity.FriendApply;
 import com.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
+import com.tomhusky.wechatmvc.server.vo.msg.AddFriendMsg;
 import com.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,6 +18,22 @@ import com.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;
  * @since 2021/10/14 11:14
  */
 public interface FriendApplyService extends BaseService<FriendApply> {
+
+    /**
+     * 发送用户的所有新好友请求消息
+     *
+     * @param username 账号
+     * @return boolean
+     */
+    boolean sendAllFriendApplyMsg(String username);
+
+    /**
+     * 获取用户的所有新好友请求
+     *
+     * @param username 账号
+     * @return java.util.List<com.tomhusky.wechatmvc.server.entity.FriendApply>
+     */
+    List<FriendApply> listAllFriendApply(String username);
 
     /**
      * 申请添加好友

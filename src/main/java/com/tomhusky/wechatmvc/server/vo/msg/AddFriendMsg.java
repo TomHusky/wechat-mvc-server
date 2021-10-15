@@ -58,4 +58,9 @@ public class AddFriendMsg {
      * 验证消息
      */
     private String info;
+
+    /**
+     * 添加状态 0已发送 1 已添加 2 已拒绝
+     */
+    private Integer status;
 }

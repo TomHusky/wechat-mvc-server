@@ -12,6 +12,7 @@ package com.tomhusky.wechatmvc.server.common.enums;
 public enum MsgUrlType {
 
     NEW_FRIEND_MSG("/friend/newFriend", "新好友消息"),
+    ADD_FRIEND_MSG("/friend/addFriend", "添加好友消息"),
     CHAT_MSG("/chat/msg", "新好友消息");
 
 

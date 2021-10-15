@@ -1,10 +1,10 @@
 package com.tomhusky.wechatmvc.server.mapper;
 
-import com.tomhusky.wechatmvc.server.entity.UserRelation;
 import com.tomhusky.wechatmvc.server.common.base.CommonMapper;
+import com.tomhusky.wechatmvc.server.entity.UserRelation;
 import com.tomhusky.wechatmvc.server.vo.query.FriendListVo;
-import com.tomhusky.wechatmvc.server.vo.query.SelectUserVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,4 +24,12 @@ public interface UserRelationMapper extends CommonMapper<UserRelation> {
      */
     List<FriendListVo> listAllFriendInfo(Integer userId);
 
+    /**
+     * 获取好友信息
+     *
+     * @param userId  用户id
+     * @param friendId 好友id
+     * @return com.tomhusky.wechatmvc.server.vo.query.FriendListVo
+     */
+    FriendListVo getFriendInfo(@Param("userId") Integer userId, @Param("friendId")Integer friendId);
 }

@@ -44,7 +44,7 @@ public class FriendApply extends AbstractEntity<Account> {
     /**
      * 添加状态 0已发送 1 已添加 2 已拒绝
      */
-    private String status;
+    private Integer status;
 
     /**
      * 申请信息

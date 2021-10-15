@@ -2,6 +2,7 @@ package com.tomhusky.wechatmvc.server.session.handler;
 
 import com.tomhusky.wechatmvc.server.common.util.TokenBuild;
 import com.tomhusky.wechatmvc.server.entity.User;
+import com.tomhusky.wechatmvc.server.service.OnlineService;
 import com.tomhusky.wechatmvc.server.service.UserService;
 import com.tomhusky.wechatmvc.server.session.OnlineUserManage;
 import com.tomhusky.wechatmvc.server.session.UserSessionDetail;
@@ -29,6 +30,9 @@ public class WebSocketMsgHandler implements CustomerWebSocketHandler {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OnlineService onlineService;
+
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
         log.info("------------连接成功:{}-------------", webSocketSession.getId());
@@ -38,6 +42,9 @@ public class WebSocketMsgHandler implements CustomerWebSocketHandler {
         String username = TokenBuild.getPayloads(redisToken).get("username").toString();
 
         OnlineUserManage.add(username, webSocketSession.getId());
+
+        // 上线之后任务处理
+        onlineService.startTask(username);
 
         log.info("username:{}", username);
     }
