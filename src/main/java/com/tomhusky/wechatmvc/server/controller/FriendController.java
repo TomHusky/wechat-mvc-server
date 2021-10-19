@@ -40,6 +40,14 @@ public class FriendController {
     }
 
     /**
+     * 更新好友信息
+     */
+    @PostMapping("/updateFriendInfo")
+    public JsonResult<Boolean> updateFriendInfo(@RequestBody @Valid AddFriendVo userVo) {
+        return JsonResult.success(friendApplyService.applyAddFriend(userVo));
+    }
+
+    /**
      * 申请添加好友
      */
     @PostMapping("/applyAddFriend")

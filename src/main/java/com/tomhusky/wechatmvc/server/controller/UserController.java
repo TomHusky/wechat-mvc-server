@@ -1,7 +1,6 @@
 package com.tomhusky.wechatmvc.server.controller;
 
 import com.tomhusky.wechatmvc.server.common.JsonResult;
-import com.tomhusky.wechatmvc.server.service.FriendApplyService;
 import com.tomhusky.wechatmvc.server.service.GroupChatService;
 import com.tomhusky.wechatmvc.server.service.UserRelationService;
 import com.tomhusky.wechatmvc.server.service.UserService;

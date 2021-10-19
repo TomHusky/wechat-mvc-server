@@ -20,7 +20,6 @@ public class CreateGroupChatVo {
     /**
      * 群名称
      */
-    @NotBlank(message = "groupName is null")
     private String groupName;
 
     /**
