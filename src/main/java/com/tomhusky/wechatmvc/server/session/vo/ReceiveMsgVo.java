@@ -15,12 +15,12 @@ import lombok.Data;
 public class ReceiveMsgVo {
 
     /**
-     * 收消息的主体 群聊对应群编号 好友对应username  目前只有群聊
+     * 发送消息的主体 群聊对应群编号 好友对应username  目前只有群聊
      */
-    private String receiveId;
+    private String sendId;
 
     /**
-     * 发送消息用户username
+     * 发送消息的用户 当消息内容为 好友时 改值和sendId一致
      */
     private String username;
 
@@ -33,6 +33,11 @@ public class ReceiveMsgVo {
      * 消息类型 1 好友 2 群聊
      */
     private Integer msgType;
+
+    /**
+     * 消息内容类型 1 文本和表情 2 图片
+     */
+    private Integer contentType;
 
     /**
      * 发送时间

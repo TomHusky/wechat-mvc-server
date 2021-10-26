@@ -25,6 +25,11 @@ public class GroupUserDetail {
     private String wxid;
 
     /**
+     * 0 群主 1 普通 2管理员
+     */
+    private Integer type;
+
+    /**
      * 昵称
      */
     private String nickname;

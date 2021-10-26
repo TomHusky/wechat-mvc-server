@@ -1,4 +1,4 @@
-package com.tomhusky.wechatmvc.server.service;
+package com.tomhusky.wechatmvc.server.service.base;
 
 import com.tomhusky.wechatmvc.server.common.base.BaseService;
 import com.tomhusky.wechatmvc.server.entity.FriendApply;

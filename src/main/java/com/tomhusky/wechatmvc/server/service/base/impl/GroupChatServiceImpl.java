@@ -1,8 +1,10 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.base.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
+import com.tomhusky.wechatmvc.server.common.enums.GroupUserType;
 import com.tomhusky.wechatmvc.server.common.exception.DateNoneException;
 import com.tomhusky.wechatmvc.server.common.exception.OperateException;
 import com.tomhusky.wechatmvc.server.entity.GroupChat;
@@ -11,12 +13,13 @@ import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.mapper.GroupChatMapper;
 import com.tomhusky.wechatmvc.server.security.JwtUser;
 import com.tomhusky.wechatmvc.server.security.SecurityUtils;
-import com.tomhusky.wechatmvc.server.service.GroupChatService;
-import com.tomhusky.wechatmvc.server.service.GroupChatUserService;
-import com.tomhusky.wechatmvc.server.service.ImageService;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.GroupChatService;
+import com.tomhusky.wechatmvc.server.service.base.GroupChatUserService;
+import com.tomhusky.wechatmvc.server.service.base.ImageService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import com.tomhusky.wechatmvc.server.vo.add.CreateGroupChatVo;
 import com.tomhusky.wechatmvc.server.vo.query.GroupChatListVo;
+import com.tomhusky.wechatmvc.server.vo.query.GroupChatVo;
 import com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,31 +57,43 @@ public class GroupChatServiceImpl extends BaseServiceImpl<GroupChatMapper, Group
             groupNo = groupNo + times.substring(times.length() - 4);
         }
         GroupChat groupChat = new GroupChat();
+        if (StrUtil.isBlank(groupChatVo.getGroupName())) {
+            groupChatVo.setGroupName("群聊");
+        }
         groupChat.setGroupName(groupChatVo.getGroupName());
-        groupChat.setOwnerId(loginUser.getUser().getWxid());
+        groupChat.setOwnerId(loginUser.getUser().getUsername());
         groupChat.setGroupNo(groupNo);
 
         this.save(groupChat);
 
         GroupChatListVo groupChatListVo = BeanUtil.copyProperties(groupChat, GroupChatListVo.class);
-        saveGroupChatUser(groupChat, groupChatVo.getUserDetails());
+        saveGroupChatUser(groupChat, groupChatVo.getUsernames());
 
         this.updateById(groupChat);
 
         return groupChatListVo;
     }
 
-    private List<GroupUserDetail> saveGroupChatUser(GroupChat groupChat, List<CreateGroupChatVo.UserDetail> userDetailList) {
-        User user = userService.getByWxid(groupChat.getOwnerId());
+    private List<GroupUserDetail> saveGroupChatUser(GroupChat groupChat, List<String> usernames) {
+        User user = userService.getUserByName(groupChat.getOwnerId());
         if (user == null) {
             throw new OperateException("创建失败");
         }
         List<GroupUserDetail> objects = new ArrayList<>();
         List<String> avatars = new ArrayList<>();
 
+        // 保存群主
+        GroupChatUser ownerUser = new GroupChatUser();
+        ownerUser.setGroupNo(groupChat.getGroupNo());
+        ownerUser.setUserId(user.getId());
+        ownerUser.setType(GroupUserType.OWNER.getValue());
+        avatars.add(user.getAvatar());
+        groupChatUserService.save(ownerUser);
+
+        // 保存群成员
         objects.add(BeanUtil.copyProperties(user, GroupUserDetail.class));
-        for (CreateGroupChatVo.UserDetail userDetail : userDetailList) {
-            User u = userService.getByWxid(userDetail.getWxid());
+        for (String username : usernames) {
+            User u = userService.getUserByName(username);
             GroupChatUser groupChatUser = new GroupChatUser();
             groupChatUser.setGroupNo(groupChat.getGroupNo());
             groupChatUser.setUserId(u.getId());
@@ -86,6 +101,7 @@ public class GroupChatServiceImpl extends BaseServiceImpl<GroupChatMapper, Group
             avatars.add(u.getAvatar());
 
             groupChatUserService.save(groupChatUser);
+
             GroupUserDetail groupUserDetail = new GroupUserDetail();
             BeanUtil.copyProperties(u, groupUserDetail);
             objects.add(groupUserDetail);
@@ -102,22 +118,23 @@ public class GroupChatServiceImpl extends BaseServiceImpl<GroupChatMapper, Group
         if (user == null) {
             throw new DateNoneException("用户不存在");
         }
-        List<GroupChat> groupChats = baseMapper.listGroupChatByUser(user.getId());
+        List<GroupChatVo> groupChats = baseMapper.listGroupChatByUser(user.getId());
         if (groupChats.isEmpty()) {
             return Collections.emptyList();
         }
         List<GroupChatListVo> groupChatListVoList = new ArrayList<>();
-        for (GroupChat groupChat : groupChats) {
+        for (GroupChatVo groupChat : groupChats) {
             GroupChatListVo groupChatListVo = new GroupChatListVo();
-            groupChatListVo.setGroupNo(groupChat.getGroupNo());
-            groupChatListVo.setGroupName(groupChat.getGroupName());
-            groupChatListVo.setGroupAvatar(groupChat.getGroupAvatar());
-            groupChatListVo.setOwnerId(groupChat.getOwnerId());
-            groupChatListVo.setNotice(groupChat.getNotice());
+            BeanUtil.copyProperties(groupChat, groupChatListVo);
             List<GroupUserDetail> userDetails = baseMapper.listGroupChatUserInfo(groupChat.getGroupNo());
             groupChatListVo.setUserDetails(userDetails);
             groupChatListVoList.add(groupChatListVo);
         }
         return groupChatListVoList;
+    }
+
+    @Override
+    public List<GroupUserDetail> listGroupChatAllUser(String groupNo) {
+        return baseMapper.listGroupChatUserInfo(groupNo);
     }
 }

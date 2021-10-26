@@ -1,4 +1,4 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.base.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
@@ -12,9 +12,9 @@ import com.tomhusky.wechatmvc.server.entity.FriendApply;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.mapper.FriendApplyMapper;
 import com.tomhusky.wechatmvc.server.security.SecurityUtils;
-import com.tomhusky.wechatmvc.server.service.FriendApplyService;
-import com.tomhusky.wechatmvc.server.service.UserRelationService;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.FriendApplyService;
+import com.tomhusky.wechatmvc.server.service.base.UserRelationService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import com.tomhusky.wechatmvc.server.session.OnlineUserManage;
 import com.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
 import com.tomhusky.wechatmvc.server.vo.msg.AddFriendMsg;

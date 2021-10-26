@@ -1,6 +1,6 @@
 package com.tomhusky.wechatmvc.server.security;
 
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

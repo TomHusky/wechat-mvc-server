@@ -2,7 +2,6 @@ package com.tomhusky.wechatmvc.server.vo.add;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -26,18 +25,6 @@ public class CreateGroupChatVo {
      * 群成员信息
      */
     @Size(min = 1, message = "min size is 1")
-    private List<UserDetail> userDetails;
+    private List<String> usernames;
 
-    @Data
-    public static class UserDetail {
-        /**
-         * 用户名
-         */
-        private String username;
-
-        /**
-         * wxid
-         */
-        private String wxid;
-    }
 }

@@ -43,4 +43,14 @@ public class GroupChatUser extends AbstractEntity<GroupChatUser> {
      */
     private String groupNo;
 
+    /**
+     * 免打扰
+     */
+    private Boolean notDisturb;
+
+
+    /**
+     * 群备注名
+     */
+    private String remark;
 }

@@ -1,9 +1,10 @@
-package com.tomhusky.wechatmvc.server.service;
+package com.tomhusky.wechatmvc.server.service.base;
 
 import com.tomhusky.wechatmvc.server.entity.GroupChat;
 import com.tomhusky.wechatmvc.server.common.base.BaseService;
 import com.tomhusky.wechatmvc.server.vo.add.CreateGroupChatVo;
 import com.tomhusky.wechatmvc.server.vo.query.GroupChatListVo;
+import com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail;
 
 import java.util.List;
 
@@ -31,4 +32,11 @@ public interface GroupChatService extends BaseService<GroupChat> {
      */
     List<GroupChatListVo> listGroupChat(String username);
 
+    /**
+     * 根据群编号获取所有群成员
+     *
+     * @param groupNo 群编号
+     * @return java.util.List<com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail>
+     */
+    List<GroupUserDetail> listGroupChatAllUser(String groupNo);
 }

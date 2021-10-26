@@ -2,7 +2,6 @@ package com.tomhusky.wechatmvc.server.common.util;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.FileUtil;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -89,6 +88,9 @@ public class ImageUtils {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         // 创建Graphics2D对象，用在底图对象上绘图
         Graphics2D g2d = img.createGraphics();
+        g2d.setColor(new Color(221, 222, 224));
+        //白色填充整个屏幕
+        g2d.fillRect(0, 0, width, height);
         // 在图形和图像中实现混合和透明效果
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
         for (PressImgVO pressImg : pressImgList) {

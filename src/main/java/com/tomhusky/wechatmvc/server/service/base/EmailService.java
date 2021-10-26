@@ -1,4 +1,4 @@
-package com.tomhusky.wechatmvc.server.service;
+package com.tomhusky.wechatmvc.server.service.base;
 
 import javax.mail.MessagingException;
 

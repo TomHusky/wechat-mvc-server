@@ -1,9 +1,9 @@
 package com.tomhusky.wechatmvc.server.controller;
 
 import com.tomhusky.wechatmvc.server.common.JsonResult;
-import com.tomhusky.wechatmvc.server.service.AccountService;
-import com.tomhusky.wechatmvc.server.service.EmailService;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.AccountService;
+import com.tomhusky.wechatmvc.server.service.base.EmailService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import com.tomhusky.wechatmvc.server.vo.add.AddAccountVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

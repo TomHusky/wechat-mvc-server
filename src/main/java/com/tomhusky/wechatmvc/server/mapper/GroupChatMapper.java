@@ -2,6 +2,7 @@ package com.tomhusky.wechatmvc.server.mapper;
 
 import com.tomhusky.wechatmvc.server.common.base.CommonMapper;
 import com.tomhusky.wechatmvc.server.entity.GroupChat;
+import com.tomhusky.wechatmvc.server.vo.query.GroupChatVo;
 import com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,7 +28,7 @@ public interface GroupChatMapper extends CommonMapper<GroupChat> {
      * 获取用户的群聊列表
      *
      * @param userId 用户id
-     * @return java.util.List<com.tomhusky.wechatmvc.server.entity.GroupChat>
+     * @return java.util.List<com.tomhusky.wechatmvc.server.vo.query.GroupChatVo>
      */
-    List<GroupChat> listGroupChatByUser(Integer userId);
+    List<GroupChatVo> listGroupChatByUser(Integer userId);
 }

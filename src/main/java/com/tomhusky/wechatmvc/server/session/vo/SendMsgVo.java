@@ -30,6 +30,11 @@ public class SendMsgVo {
     private Integer msgType;
 
     /**
+     * 消息内容类型 1 文本和表情 2 图片
+     */
+    private Integer contentType;
+
+    /**
      * 发送时间
      */
     private Long sendTime;

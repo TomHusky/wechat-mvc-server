@@ -1,9 +1,9 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.base.impl;
 
 import com.tomhusky.wechatmvc.server.common.constant.RedisCacheName;
 import com.tomhusky.wechatmvc.server.common.util.RedisStringCache;
 import com.tomhusky.wechatmvc.server.common.util.VerCodeGenerateUtil;
-import com.tomhusky.wechatmvc.server.service.EmailService;
+import com.tomhusky.wechatmvc.server.service.base.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

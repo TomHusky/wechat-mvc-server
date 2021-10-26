@@ -3,7 +3,7 @@ package com.tomhusky.wechatmvc.server.session.handler;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.tomhusky.wechatmvc.server.common.exception.JwtException;
 import com.tomhusky.wechatmvc.server.security.JwtAuthenticationFilter;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import io.github.tomhusky.websocket.interceptor.LoginValidIntercept;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

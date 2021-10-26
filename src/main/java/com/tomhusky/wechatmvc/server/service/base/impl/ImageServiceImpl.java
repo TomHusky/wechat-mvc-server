@@ -1,13 +1,15 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.base.impl;
 
+import cn.hutool.core.io.FileUtil;
 import com.tomhusky.wechatmvc.server.common.util.ImageUtils;
-import com.tomhusky.wechatmvc.server.service.ImageService;
+import com.tomhusky.wechatmvc.server.service.base.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +30,41 @@ public class ImageServiceImpl implements ImageService {
     @Value("${file.rootPath}")
     private String rootPath;
 
+    @Value("${file.baseUrl}")
+    private String baseUrl;
+
+    @Override
+    public String saveImg(String fileName, File file) {
+        File saveFile = new File(rootPath + fileName);
+        if (saveFile.exists()) {
+            FileUtil.touch(saveFile);
+        }
+        FileUtil.copy(file, saveFile, true);
+        return baseUrl + fileName;
+    }
+
+    @Override
+    public String saveImg(String fileName, BufferedImage img) {
+        ImageUtils.generateWaterFile(img, rootPath + fileName);
+        return baseUrl + fileName;
+    }
+
     @Override
     public String getGroupAvatar(List<String> images, String groupNo) {
+        String fileUrl = baseUrl;
         if (images.size() <= 4) {
-            return composeFour(images, groupNo);
+            fileUrl = fileUrl + composeFour(images, groupNo);
         } else if (images.size() <= 6) {
-            return composeSix(images, groupNo);
+            fileUrl = fileUrl + composeSix(images, groupNo);
         } else {
-            return composeNine(images, groupNo);
+            fileUrl = fileUrl + composeNine(images, groupNo);
         }
+        return fileUrl;
     }
 
     private String composeFour(List<String> images, String groupNo) {
         String filePath = rootPath + groupNo + ".jpg";
+        String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
             int x;
@@ -66,7 +90,7 @@ public class ImageServiceImpl implements ImageService {
             }
             BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 64, 64, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
-            return filePath;
+            return fileName;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -75,6 +99,7 @@ public class ImageServiceImpl implements ImageService {
 
     private String composeSix(List<String> images, String groupNo) {
         String filePath = rootPath + groupNo + ".jpg";
+        String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
             int x;
@@ -103,7 +128,7 @@ public class ImageServiceImpl implements ImageService {
             }
             BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 64, 64, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
-            return filePath;
+            return fileName;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -112,6 +137,7 @@ public class ImageServiceImpl implements ImageService {
 
     private String composeNine(List<String> images, String groupNo) {
         String filePath = rootPath + groupNo + ".jpg";
+        String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
             int x;
@@ -146,7 +172,7 @@ public class ImageServiceImpl implements ImageService {
             }
             BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 64, 64, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
-            return filePath;
+            return fileName;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

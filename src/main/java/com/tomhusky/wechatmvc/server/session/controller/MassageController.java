@@ -4,14 +4,19 @@ import cn.hutool.core.bean.BeanUtil;
 import com.tomhusky.wechatmvc.server.common.JsonResult;
 import com.tomhusky.wechatmvc.server.common.enums.MsgType;
 import com.tomhusky.wechatmvc.server.common.enums.MsgUrlType;
+import com.tomhusky.wechatmvc.server.service.base.GroupChatService;
 import com.tomhusky.wechatmvc.server.session.OnlineUserManage;
 import com.tomhusky.wechatmvc.server.session.UserSessionDetail;
 import com.tomhusky.wechatmvc.server.session.vo.ReceiveMsgVo;
 import com.tomhusky.wechatmvc.server.session.vo.SendMsgVo;
+import com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail;
 import io.github.tomhusky.websocket.annotation.SocketController;
 import io.github.tomhusky.websocket.annotation.SocketRequestMapping;
 import io.github.tomhusky.websocket.context.WebSocketContext;
 import io.github.tomhusky.websocket.context.WebSocketContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * <p>
@@ -26,16 +31,41 @@ import io.github.tomhusky.websocket.context.WebSocketContextHolder;
 @SocketController
 public class MassageController {
 
+    @Autowired
+    private GroupChatService groupChatService;
+
     @SocketRequestMapping("/send")
     public JsonResult<String> sendMsg(SendMsgVo sendMsgVo) {
         WebSocketContext context = WebSocketContextHolder.getContext();
         UserSessionDetail sessionDetail = (UserSessionDetail) context.getSessionDetail();
-        // TODO 保存消息
-        ReceiveMsgVo receiveMsgVo = BeanUtil.copyProperties(sendMsgVo, ReceiveMsgVo.class);
-        receiveMsgVo.setUsername(sessionDetail.getUsername());
         if (MsgType.FRIEND.getValue() == sendMsgVo.getMsgType()) {
-            OnlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), sendMsgVo.getReceiveId(), JsonResult.success(receiveMsgVo));
+            sendFriendMsg(sessionDetail, sendMsgVo);
+        } else if (MsgType.GROUP.getValue() == sendMsgVo.getMsgType()) {
+            sendGroupChatMsg(sessionDetail, sendMsgVo);
         }
         return JsonResult.success("ok");
+    }
+
+    public void sendFriendMsg(UserSessionDetail sessionDetail, SendMsgVo sendMsgVo) {
+        // TODO 保存消息
+        ReceiveMsgVo receiveMsgVo = BeanUtil.copyProperties(sendMsgVo, ReceiveMsgVo.class);
+        receiveMsgVo.setSendId(sessionDetail.getUsername());
+        receiveMsgVo.setUsername(sessionDetail.getUsername());
+        OnlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), sendMsgVo.getReceiveId(), JsonResult.success(receiveMsgVo));
+
+    }
+
+    public void sendGroupChatMsg(UserSessionDetail sessionDetail, SendMsgVo sendMsgVo) {
+        // TODO 保存消息
+        List<GroupUserDetail> groupUserDetails = groupChatService.listGroupChatAllUser(sendMsgVo.getReceiveId());
+        for (GroupUserDetail groupUserDetail : groupUserDetails) {
+            if (groupUserDetail.getUsername().equals(sessionDetail.getUsername())) {
+                continue;
+            }
+            ReceiveMsgVo receiveMsgVo = BeanUtil.copyProperties(sendMsgVo, ReceiveMsgVo.class);
+            receiveMsgVo.setSendId(sendMsgVo.getReceiveId());
+            receiveMsgVo.setUsername(sessionDetail.getUsername());
+            OnlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), groupUserDetail.getUsername(), JsonResult.success(receiveMsgVo));
+        }
     }
 }

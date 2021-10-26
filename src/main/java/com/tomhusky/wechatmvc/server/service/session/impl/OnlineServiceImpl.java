@@ -1,8 +1,8 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.session.impl;
 
 import com.tomhusky.wechatmvc.server.common.util.Threads;
-import com.tomhusky.wechatmvc.server.service.FriendApplyService;
-import com.tomhusky.wechatmvc.server.service.OnlineService;
+import com.tomhusky.wechatmvc.server.service.base.FriendApplyService;
+import com.tomhusky.wechatmvc.server.service.session.OnlineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

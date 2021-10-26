@@ -1,4 +1,4 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.base.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.digest.MD5;
@@ -13,7 +13,7 @@ import com.tomhusky.wechatmvc.server.common.util.RedisStringCache;
 import com.tomhusky.wechatmvc.server.common.util.TokenBuild;
 import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.mapper.UserMapper;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import com.tomhusky.wechatmvc.server.vo.AccountInfo;
 import com.tomhusky.wechatmvc.server.vo.query.SelectUserVo;
 import org.springframework.beans.factory.annotation.Autowired;

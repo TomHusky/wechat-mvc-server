@@ -1,9 +1,8 @@
 package com.tomhusky.wechatmvc.server.session.handler;
 
 import com.tomhusky.wechatmvc.server.common.util.TokenBuild;
-import com.tomhusky.wechatmvc.server.entity.User;
-import com.tomhusky.wechatmvc.server.service.OnlineService;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.session.OnlineService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import com.tomhusky.wechatmvc.server.session.OnlineUserManage;
 import com.tomhusky.wechatmvc.server.session.UserSessionDetail;
 import io.github.tomhusky.websocket.CustomerWebSocketHandler;

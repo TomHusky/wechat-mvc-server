@@ -1,4 +1,4 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.base.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.pinyin.PinyinUtil;
@@ -10,8 +10,8 @@ import com.tomhusky.wechatmvc.server.entity.User;
 import com.tomhusky.wechatmvc.server.entity.UserRelation;
 import com.tomhusky.wechatmvc.server.mapper.FriendInfoMapper;
 import com.tomhusky.wechatmvc.server.mapper.UserRelationMapper;
-import com.tomhusky.wechatmvc.server.service.UserRelationService;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.UserRelationService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import com.tomhusky.wechatmvc.server.vo.query.FriendListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

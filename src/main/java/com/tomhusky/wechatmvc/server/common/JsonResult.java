@@ -72,11 +72,11 @@ public class JsonResult<T> implements Serializable {
      * 成功
      *
      * @param message 提示语
-     * @param <T>
      * @return
      */
-    public static <T> JsonResult<T> success(String message) {
-        return initResult(SUCCESS_CODE, message, null);
+    public JsonResult<T> message(String message) {
+        this.msg = message;
+        return this;
     }
 
 

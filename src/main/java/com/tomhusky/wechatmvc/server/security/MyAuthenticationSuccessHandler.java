@@ -3,7 +3,7 @@ package com.tomhusky.wechatmvc.server.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tomhusky.wechatmvc.server.common.JsonResult;
 import com.tomhusky.wechatmvc.server.common.util.TokenBuild;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

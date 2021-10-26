@@ -4,7 +4,6 @@ import com.tomhusky.wechatmvc.server.common.JsonResult;
 import com.tomhusky.wechatmvc.server.common.exception.BaseException;
 import com.tomhusky.wechatmvc.server.common.exception.JwtException;
 import com.tomhusky.wechatmvc.server.common.exception.LockException;
-import com.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;

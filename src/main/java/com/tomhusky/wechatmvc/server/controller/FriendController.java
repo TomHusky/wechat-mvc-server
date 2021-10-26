@@ -1,9 +1,8 @@
 package com.tomhusky.wechatmvc.server.controller;
 
 import com.tomhusky.wechatmvc.server.common.JsonResult;
-import com.tomhusky.wechatmvc.server.service.FriendApplyService;
-import com.tomhusky.wechatmvc.server.service.UserRelationService;
-import com.tomhusky.wechatmvc.server.service.UserService;
+import com.tomhusky.wechatmvc.server.service.base.FriendApplyService;
+import com.tomhusky.wechatmvc.server.service.base.UserRelationService;
 import com.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
 import com.tomhusky.wechatmvc.server.vo.query.FriendListVo;
 import com.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;

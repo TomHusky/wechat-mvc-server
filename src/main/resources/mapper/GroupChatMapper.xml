@@ -7,7 +7,9 @@
                su.sex,
                su.avatar,
                su.nickname,
-               su.area
+               su.username,
+               su.area,
+               gcu.type
         from group_chat gc
                      left join group_chat_user gcu on gc.group_no = gcu.group_no
                      left join sys_user su on su.id = gcu.user_id
@@ -15,8 +17,8 @@
           and gc.group_no = #{groupNo}
     </select>
 
-    <select id="listGroupChatByUser" resultType="com.tomhusky.wechatmvc.server.entity.GroupChat">
-        select gc.*
+    <select id="listGroupChatByUser" resultType="com.tomhusky.wechatmvc.server.vo.query.GroupChatVo">
+        select gc.*, gcu.remark, gcu.not_disturb
         from group_chat gc
                      left join group_chat_user gcu
                 on gc.group_no = gcu.group_no

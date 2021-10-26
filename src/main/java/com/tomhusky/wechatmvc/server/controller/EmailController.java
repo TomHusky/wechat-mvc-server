@@ -3,7 +3,7 @@ package com.tomhusky.wechatmvc.server.controller;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import com.tomhusky.wechatmvc.server.common.JsonResult;
-import com.tomhusky.wechatmvc.server.service.EmailService;
+import com.tomhusky.wechatmvc.server.service.base.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

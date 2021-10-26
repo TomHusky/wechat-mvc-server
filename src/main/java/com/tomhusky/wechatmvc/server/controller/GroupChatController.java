@@ -1,16 +1,15 @@
 package com.tomhusky.wechatmvc.server.controller;
 
 import com.tomhusky.wechatmvc.server.common.JsonResult;
-import com.tomhusky.wechatmvc.server.service.GroupChatService;
+import com.tomhusky.wechatmvc.server.security.SecurityUtils;
+import com.tomhusky.wechatmvc.server.service.base.GroupChatService;
 import com.tomhusky.wechatmvc.server.vo.add.CreateGroupChatVo;
 import com.tomhusky.wechatmvc.server.vo.query.GroupChatListVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * <p>
@@ -33,5 +32,14 @@ public class GroupChatController {
         GroupChatListVo groupChat = groupChatService.createGroupChat(groupChatVo);
         return JsonResult.success(groupChat);
     }
+
+    /**
+     * 获取用户群聊列表信息
+     */
+    @GetMapping("/listGroupChat")
+    public JsonResult<List<GroupChatListVo>> listGroupChat() {
+        return JsonResult.success(groupChatService.listGroupChat(SecurityUtils.getUsername()));
+    }
+
 
 }

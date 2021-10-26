@@ -1,8 +1,8 @@
-package com.tomhusky.wechatmvc.server.service.impl;
+package com.tomhusky.wechatmvc.server.service.base.impl;
 
 import com.tomhusky.wechatmvc.server.entity.GroupChatUser;
 import com.tomhusky.wechatmvc.server.mapper.GroupChatUserMapper;
-import com.tomhusky.wechatmvc.server.service.GroupChatUserService;
+import com.tomhusky.wechatmvc.server.service.base.GroupChatUserService;
 import com.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
