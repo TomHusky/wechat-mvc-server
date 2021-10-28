@@ -51,7 +51,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String getGroupAvatar(List<String> images, String groupNo) {
-        String fileUrl = baseUrl;
+        String fileUrl = baseUrl + "\\img\\group\\";
         if (images.size() <= 4) {
             fileUrl = fileUrl + composeFour(images, groupNo);
         } else if (images.size() <= 6) {
@@ -63,13 +63,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String composeFour(List<String> images, String groupNo) {
-        String filePath = rootPath + groupNo + ".jpg";
+        String filePath = rootPath + "img/group/" + groupNo + ".jpg";
         String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
             int x;
             int y;
-            int line = 32;
+            int line = 33;
             for (int i = 0; i < images.size(); i++) {
                 String url = images.get(i);
                 BufferedImage image = ImageIO.read(new URL(url));
@@ -88,7 +88,7 @@ public class ImageServiceImpl implements ImageService {
                 pressImgVO.setY(y);
                 pressImgVOList.add(pressImgVO);
             }
-            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 64, 64, 1);
+            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 66, 66, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
             return fileName;
         } catch (Exception e) {
@@ -98,13 +98,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String composeSix(List<String> images, String groupNo) {
-        String filePath = rootPath + groupNo + ".jpg";
+        String filePath = rootPath + "img/group/" + groupNo + ".jpg";
         String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
             int x;
             int y;
-            int line = 20;
+            int line = 22;
             for (int i = 0; i < images.size(); i++) {
                 String url = images.get(i);
                 BufferedImage image = ImageIO.read(new URL(url));
@@ -113,20 +113,17 @@ public class ImageServiceImpl implements ImageService {
                 pressImgVO.setHeight(line);
                 pressImgVO.setWidth(line);
                 if (i < 3) {
-                    y = 10;
+                    y = 11;
                     x = (i) * line;
                 } else {
-                    y = line + 10 + 2;
+                    y = 33;
                     x = (i - 3) * line;
-                }
-                if (x != 0) {
-                    x = x + 2;
                 }
                 pressImgVO.setX(x);
                 pressImgVO.setY(y);
                 pressImgVOList.add(pressImgVO);
             }
-            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 64, 64, 1);
+            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 66, 66, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
             return fileName;
         } catch (Exception e) {
@@ -136,13 +133,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String composeNine(List<String> images, String groupNo) {
-        String filePath = rootPath + groupNo + ".jpg";
+        String filePath = rootPath + "img/group/" + groupNo + ".jpg";
         String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
             int x;
             int y;
-            int line = 16;
+            int line = 22;
             for (int i = 0; i < images.size(); i++) {
                 String url = images.get(i);
                 BufferedImage image = ImageIO.read(new URL(url));
@@ -157,20 +154,14 @@ public class ImageServiceImpl implements ImageService {
                     y = line;
                     x = (i - 3) * line;
                 } else {
-                    y = line * (i - 1);
-                    x = (i - 3) * line;
-                }
-                if (x != 0) {
-                    x = x + 2;
-                }
-                if (y != 0) {
-                    y = y + 2;
+                    y = line * 2;
+                    x = (i - 6) * line;
                 }
                 pressImgVO.setX(x);
                 pressImgVO.setY(y);
                 pressImgVOList.add(pressImgVO);
             }
-            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 64, 64, 1);
+            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 66, 66, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
             return fileName;
         } catch (Exception e) {
