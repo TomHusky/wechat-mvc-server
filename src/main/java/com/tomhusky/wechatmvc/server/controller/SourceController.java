@@ -4,10 +4,7 @@ import com.tomhusky.wechatmvc.server.common.JsonResult;
 import com.tomhusky.wechatmvc.server.service.base.SourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
@@ -37,5 +34,24 @@ public class SourceController {
         }
         return JsonResult.success(uploadImg);
     }
+
+    @PostMapping(value = "uploadFile")
+    public JsonResult<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        String uploadFile = sourceService.uploadFile(file);
+        if (uploadFile == null) {
+            return JsonResult.fail("发送失败");
+        }
+        return JsonResult.success(uploadFile);
+    }
+
+    @GetMapping(value = "listSystemIcon")
+    public JsonResult<Map<String, String>> listSystemIcon() {
+        Map<String, String> iconMap = sourceService.listSystemIconBase64();
+        if (iconMap == null) {
+            return JsonResult.fail("获取失败");
+        }
+        return JsonResult.success(iconMap);
+    }
+
 
 }

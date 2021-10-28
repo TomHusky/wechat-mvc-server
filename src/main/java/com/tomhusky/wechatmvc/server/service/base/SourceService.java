@@ -21,4 +21,19 @@ public interface SourceService {
      * @return java.util.Map<java.lang.String, java.lang.Object> 文件地址和大小
      */
     Map<String, Object> uploadImg(MultipartFile file);
+
+    /**
+     * 上传文件
+     *
+     * @param file 文件地址
+     * @return java.lang.String
+     */
+    String uploadFile(MultipartFile file);
+
+    /**
+     * 获取系统图标base64
+     *
+     * @return java.util.Map<java.lang.String, java.lang.String>
+     */
+    Map<String, String> listSystemIconBase64();
 }

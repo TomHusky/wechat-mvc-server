@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -23,6 +24,16 @@ public class ImageUtils {
     public static String base64(File file) {
         byte[] bytes = FileUtil.readBytes(file);
         return Base64.encode(bytes);
+    }
+
+    public static String base64(BufferedImage image, String type) {
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();) {
+            ImageIO.write(image, type, stream);
+            return Base64.encode(stream.toByteArray());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
     }
 
     /**

@@ -1,3 +1,3 @@
 file:
-  rootPath: D:\\mnt\\docker\\nginx\\www\\file\\img\\
-  baseUrl: http://127.0.0.1/file/img/
+  rootPath: D:\\mnt\\docker\\nginx\\www\\wechat\\
+  baseUrl: http://127.0.0.1/wechat/

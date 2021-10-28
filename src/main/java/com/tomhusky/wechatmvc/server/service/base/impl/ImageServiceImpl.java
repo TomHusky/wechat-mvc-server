@@ -35,18 +35,18 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String saveImg(String fileName, File file) {
-        File saveFile = new File(rootPath + fileName);
-        if (saveFile.exists()) {
+        File saveFile = new File(rootPath + "img\\" + fileName);
+        if (!saveFile.exists()) {
             FileUtil.touch(saveFile);
         }
         FileUtil.copy(file, saveFile, true);
-        return baseUrl + fileName;
+        return baseUrl + "img/" + fileName;
     }
 
     @Override
     public String saveImg(String fileName, BufferedImage img) {
-        ImageUtils.generateWaterFile(img, rootPath + fileName);
-        return baseUrl + fileName;
+        ImageUtils.generateWaterFile(img, rootPath + "\\img\\" + fileName);
+        return baseUrl + "img/" + fileName;
     }
 
     @Override

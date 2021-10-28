@@ -4,8 +4,12 @@ server:
     context-path: /chat
 
 spring:
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 20MB
   profiles:
-    active: dev
+    active: test
   application:
     name: wechat-mvc
   mail:
