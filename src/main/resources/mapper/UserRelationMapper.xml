@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tomhusky.wechatmvc.server.mapper.UserRelationMapper">
-    <select id="listAllFriendInfo" resultType="com.tomhusky.wechatmvc.server.vo.query.FriendListVo">
+<mapper namespace="io.github.tomhusky.wechatmvc.server.mapper.UserRelationMapper">
+    <select id="listAllFriendInfo" resultType="io.github.tomhusky.wechatmvc.server.vo.query.FriendListVo">
         select su.username,
                su.nickname,
                su.mobile,
@@ -23,7 +23,7 @@
         where sur.user_id = #{userId,jdbcType=INTEGER}
     </select>
 
-    <select id="getFriendInfo" resultType="com.tomhusky.wechatmvc.server.vo.query.FriendListVo">
+    <select id="getFriendInfo" resultType="io.github.tomhusky.wechatmvc.server.vo.query.FriendListVo">
         select su.username,
                su.nickname,
                su.mobile,

@@ -39,8 +39,8 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     auto-mapping-behavior: full
   mapper-locations: classpath*:mapper/**/*Mapper.xml
-  type-aliases-package: com.tomhusky.wechatmvc.server.*.entity
+  type-aliases-package: io.github.tomhusky.wechatmvc.server.*.entity
 
 web-socket-mvc:
-  basePackage: com.tomhusky.wechatmvc.server.session.controller
+  basePackage: io.github.tomhusky.wechatmvc.server.session.controller
   enable-valid: true

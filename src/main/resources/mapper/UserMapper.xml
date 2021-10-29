@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tomhusky.wechatmvc.server.mapper.UserMapper">
-    <select id="getAccountInfoByName" resultType="com.tomhusky.wechatmvc.server.vo.AccountInfo">
+<mapper namespace="io.github.tomhusky.wechatmvc.server.mapper.UserMapper">
+    <select id="getAccountInfoByName" resultType="io.github.tomhusky.wechatmvc.server.vo.AccountInfo">
         select u.username,
                u.nickname,
                u.avatar,
@@ -17,7 +17,7 @@
         where u.username = #{username}
     </select>
 
-    <select id="selectUser" resultType="com.tomhusky.wechatmvc.server.vo.query.SelectUserVo">
+    <select id="selectUser" resultType="io.github.tomhusky.wechatmvc.server.vo.query.SelectUserVo">
         select su.username,
                su.nickname,
                su.avatar,

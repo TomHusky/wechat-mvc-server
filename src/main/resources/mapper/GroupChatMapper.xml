@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tomhusky.wechatmvc.server.mapper.GroupChatMapper">
-    <select id="listGroupChatUserInfo" resultType="com.tomhusky.wechatmvc.server.vo.query.GroupUserDetail">
+<mapper namespace="io.github.tomhusky.wechatmvc.server.mapper.GroupChatMapper">
+    <select id="listGroupChatUserInfo" resultType="io.github.tomhusky.wechatmvc.server.vo.query.GroupUserDetail">
         select su.wxid,
                su.signature,
                su.sex,
@@ -17,7 +17,7 @@
           and gc.group_no = #{groupNo}
     </select>
 
-    <select id="listGroupChatByUser" resultType="com.tomhusky.wechatmvc.server.vo.query.GroupChatVo">
+    <select id="listGroupChatByUser" resultType="io.github.tomhusky.wechatmvc.server.vo.query.GroupChatVo">
         select gc.*, gcu.remark, gcu.not_disturb
         from group_chat gc
                      left join group_chat_user gcu

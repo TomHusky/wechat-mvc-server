@@ -8,7 +8,7 @@
         <version>2.4.10</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.tomhusky</groupId>
+    <groupId>io.github.tomhusky</groupId>
     <artifactId>wechat-mvc-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>wechat-mvc-server</name>
@@ -28,6 +28,11 @@
         <mybatis-plus-generator>3.4.1</mybatis-plus-generator>
         <mongodb.version>3.0.7</mongodb.version>
         <hutool.version>5.7.11</hutool.version>
+
+        <maven-dockerfile-plugin.version>1.4.10</maven-dockerfile-plugin.version>
+        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <!--镜像前缀-->
+        <docker.image.prefix>io.github.tomhusky</docker.image.prefix>
     </properties>
     <dependencies>
         <dependency>
@@ -137,6 +142,30 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${maven.compiler.encoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <!--打包跳过测试-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <!-- docker打包插件 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${maven-dockerfile-plugin.version}</version>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>
