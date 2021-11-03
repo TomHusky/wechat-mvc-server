@@ -9,29 +9,13 @@ spring:
       max-request-size: 20MB
       max-file-size: 20MB
   profiles:
-    active: test
+    active: dev
   application:
     name: wechat-mvc
   mail:
     username: luo.wenjie@foxmail.com
     password: wcurflpctejtcdjh
     host: smtp.qq.com
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:33060/wechat_mvc?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: admin123
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      minimum-idle: 5
-      maximum-pool-size: 20
-      auto-commit: true
-      connection-test-query: SELECT 1
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    password: 123456
-    database: 1
 
 mybatis-plus:
   configuration:

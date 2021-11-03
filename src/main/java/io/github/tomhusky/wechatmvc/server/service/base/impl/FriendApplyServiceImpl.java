@@ -20,6 +20,7 @@ import io.github.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
 import io.github.tomhusky.wechatmvc.server.vo.msg.AddFriendMsg;
 import io.github.tomhusky.wechatmvc.server.vo.query.FriendListVo;
 import io.github.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;
+import io.github.tomhusky.wechatmvc.server.vo.update.UpdateFriendVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,6 +2,9 @@ package io.github.tomhusky.wechatmvc.server.session.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * 发送消息的vo
@@ -37,6 +40,7 @@ public class SendMsgVo {
     /**
      * 发送时间
      */
+    @NotNull(message = "发送时间不能为空")
     private Long sendTime;
 
     /**

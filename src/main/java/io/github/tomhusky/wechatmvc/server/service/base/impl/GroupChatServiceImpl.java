@@ -66,8 +66,9 @@ public class GroupChatServiceImpl extends BaseServiceImpl<GroupChatMapper, Group
 
         this.save(groupChat);
 
+        List<GroupUserDetail> groupUserDetails = saveGroupChatUser(groupChat, groupChatVo.getUsernames());
         GroupChatListVo groupChatListVo = BeanUtil.copyProperties(groupChat, GroupChatListVo.class);
-        saveGroupChatUser(groupChat, groupChatVo.getUsernames());
+        groupChatListVo.setUserDetails(groupUserDetails);
 
         this.updateById(groupChat);
 

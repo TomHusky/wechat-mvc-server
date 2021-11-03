@@ -7,14 +7,15 @@ import io.github.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
 import io.github.tomhusky.wechatmvc.server.common.constant.RedisCacheName;
 import io.github.tomhusky.wechatmvc.server.common.exception.BaseException;
 import io.github.tomhusky.wechatmvc.server.common.exception.RoleException;
+import io.github.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import io.github.tomhusky.wechatmvc.server.common.util.RedisCache;
 import io.github.tomhusky.wechatmvc.server.common.util.RedisStringCache;
 import io.github.tomhusky.wechatmvc.server.common.util.TokenBuild;
 import io.github.tomhusky.wechatmvc.server.entity.User;
 import io.github.tomhusky.wechatmvc.server.mapper.UserMapper;
+import io.github.tomhusky.wechatmvc.server.security.SecurityUtils;
 import io.github.tomhusky.wechatmvc.server.service.base.UserService;
 import io.github.tomhusky.wechatmvc.server.vo.AccountInfo;
-import io.github.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import io.github.tomhusky.wechatmvc.server.vo.query.SelectUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,26 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         if (userById == null) {
             throw new RoleException("用户不存在");
         }
+        user.setStatus(null);
+        user.setUsername(null);
+        boolean update = this.updateById(user);
+        if (update) {
+            redisCache.deleteObject(RedisCacheName.LOGIN_USER + user.getUsername());
+        }
+        return update;
+    }
+
+    @Override
+    public boolean editUserByUsername(User user) {
+        if (user == null) {
+            return false;
+        }
+        user.setUsername(SecurityUtils.getUsername());
+        User userByName = getUserByName(user.getUsername());
+        if (userByName == null) {
+            throw new RoleException("用户不存在");
+        }
+        user.setId(userByName.getId());
         user.setStatus(null);
         user.setUsername(null);
         boolean update = this.updateById(user);

@@ -1,3 +1,20 @@
 file:
   rootPath: D:\\mnt\\docker\\nginx\\www\\wechat\\
   baseUrl: http://y2725078j3.qicp.vip/wechat/
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/wechat_mvc?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: admin123
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      connection-test-query: SELECT 1
+  redis:
+    host: redis
+    port: 6379
+    password: 123456
+    database: 1

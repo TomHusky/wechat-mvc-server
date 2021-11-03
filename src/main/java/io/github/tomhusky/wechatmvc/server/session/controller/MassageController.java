@@ -15,7 +15,9 @@ import io.github.tomhusky.websocket.annotation.SocketRequestMapping;
 import io.github.tomhusky.websocket.context.WebSocketContext;
 import io.github.tomhusky.websocket.context.WebSocketContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -35,7 +37,7 @@ public class MassageController {
     private GroupChatService groupChatService;
 
     @SocketRequestMapping("/send")
-    public JsonResult<String> sendMsg(SendMsgVo sendMsgVo) {
+    public JsonResult<String> sendMsg(@Valid SendMsgVo sendMsgVo) {
         WebSocketContext context = WebSocketContextHolder.getContext();
         UserSessionDetail sessionDetail = (UserSessionDetail) context.getSessionDetail();
         if (MsgType.FRIEND.getValue() == sendMsgVo.getMsgType()) {

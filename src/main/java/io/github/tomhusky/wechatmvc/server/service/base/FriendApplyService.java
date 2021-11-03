@@ -4,6 +4,7 @@ import io.github.tomhusky.wechatmvc.server.common.base.BaseService;
 import io.github.tomhusky.wechatmvc.server.entity.FriendApply;
 import io.github.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
 import io.github.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;
+import io.github.tomhusky.wechatmvc.server.vo.update.UpdateFriendVo;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public interface FriendApplyService extends BaseService<FriendApply> {
      * @return java.lang.Boolean
      */
     Boolean applyAddFriend(AddFriendVo addFriendVo);
+
 
     /**
      * 处理好友申请

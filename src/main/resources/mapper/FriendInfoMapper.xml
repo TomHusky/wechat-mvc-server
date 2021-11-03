@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.tomhusky.wechatmvc.server.mapper.FriendInfoMapper">
+    <select id="getFriendInfo" resultType="io.github.tomhusky.wechatmvc.server.entity.FriendInfo">
+        select *
+        from sys_friend_info
+        where related_id = #{relatedId}
+        limit 1
+    </select>
+
+    <select id="getFriendInfoByUser" resultType="io.github.tomhusky.wechatmvc.server.entity.FriendInfo">
+        select *
+        from sys_friend_info sfi
+                     left join sys_user_relation sur on
+                sfi.related_id = sur.id
+        where sur.user_id = #{userId}
+          and sur.friend_id = #{friendId}
+        limit 1
+    </select>
+</mapper>

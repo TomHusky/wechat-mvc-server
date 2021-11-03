@@ -80,17 +80,17 @@ public class ImageServiceImpl implements ImageService {
                 pressImgVO.setHeight(line);
                 pressImgVO.setWidth(line);
                 if (i < 2) {
-                    y = 0;
-                    x = (i) * line;
+                    y = 2;
+                    x = (i) * line + 2 * (i + 1);
                 } else {
-                    y = line;
-                    x = (i - 2) * line;
+                    y = line + 4;
+                    x = (i - 2) * line + 2 * (i - 1);
                 }
                 pressImgVO.setX(x);
                 pressImgVO.setY(y);
                 pressImgVOList.add(pressImgVO);
             }
-            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 66, 66, 1);
+            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 72, 72, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
             return fileName;
         } catch (Exception e) {
@@ -115,17 +115,17 @@ public class ImageServiceImpl implements ImageService {
                 pressImgVO.setHeight(line);
                 pressImgVO.setWidth(line);
                 if (i < 3) {
-                    y = 11;
-                    x = (i) * line;
+                    y = 11 + 2;
+                    x = (i) * line + 2 * (i + 1);
                 } else {
-                    y = 33;
-                    x = (i - 3) * line;
+                    y = 33 + 4;
+                    x = (i - 3) * line + 2 * (i - 2);
                 }
                 pressImgVO.setX(x);
                 pressImgVO.setY(y);
                 pressImgVOList.add(pressImgVO);
             }
-            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 66, 66, 1);
+            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 74, 74, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
             return fileName;
         } catch (Exception e) {
@@ -139,8 +139,8 @@ public class ImageServiceImpl implements ImageService {
         String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
-            int x;
-            int y;
+            int x = 0;
+            int y = 0;
             int line = 22;
             for (int i = 0; i < images.size(); i++) {
                 String url = images.get(i);
@@ -150,20 +150,20 @@ public class ImageServiceImpl implements ImageService {
                 pressImgVO.setHeight(line);
                 pressImgVO.setWidth(line);
                 if (i < 3) {
-                    y = 0;
-                    x = (i) * line;
+                    y = 2;
+                    x = (i) * line + 2 * (i + 1);
                 } else if (i < 6) {
-                    y = line;
-                    x = (i - 3) * line;
+                    y = line + 4;
+                    x = (i - 3) * line + 2 * (i - 2);
                 } else {
-                    y = line * 2;
-                    x = (i - 6) * line;
+                    y = line * 2 + 6;
+                    x = (i - 6) * line + 2 * (i - 5);
                 }
                 pressImgVO.setX(x);
                 pressImgVO.setY(y);
                 pressImgVOList.add(pressImgVO);
             }
-            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 66, 66, 1);
+            BufferedImage bufferedImage = ImageUtils.pressImage(pressImgVOList, 74, 74, 1);
             ImageUtils.generateWaterFile(bufferedImage, filePath);
             return fileName;
         } catch (Exception e) {

@@ -34,6 +34,14 @@ public interface UserService extends BaseService<User> {
     boolean editUser(User user);
 
     /**
+     * 修改用户
+     *
+     * @param user 用户对象
+     * @return boolean
+     */
+    boolean editUserByUsername(User user);
+
+    /**
      * 删除用户
      *
      * @param userId 用户id

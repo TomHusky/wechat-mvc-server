@@ -2,17 +2,19 @@ package io.github.tomhusky.wechatmvc.server.service.base.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.pinyin.PinyinUtil;
+import io.github.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
 import io.github.tomhusky.wechatmvc.server.common.exception.DateNoneException;
+import io.github.tomhusky.wechatmvc.server.entity.FriendApply;
 import io.github.tomhusky.wechatmvc.server.entity.FriendInfo;
 import io.github.tomhusky.wechatmvc.server.entity.User;
 import io.github.tomhusky.wechatmvc.server.entity.UserRelation;
 import io.github.tomhusky.wechatmvc.server.mapper.FriendInfoMapper;
-import io.github.tomhusky.wechatmvc.server.service.base.UserRelationService;
-import io.github.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
-import io.github.tomhusky.wechatmvc.server.entity.FriendApply;
 import io.github.tomhusky.wechatmvc.server.mapper.UserRelationMapper;
+import io.github.tomhusky.wechatmvc.server.security.SecurityUtils;
+import io.github.tomhusky.wechatmvc.server.service.base.UserRelationService;
 import io.github.tomhusky.wechatmvc.server.service.base.UserService;
 import io.github.tomhusky.wechatmvc.server.vo.query.FriendListVo;
+import io.github.tomhusky.wechatmvc.server.vo.update.UpdateFriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,13 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelationMapper,
     @Autowired
     private FriendInfoMapper friendInfoMapper;
 
+
+    @Override
+    public UserRelation getFriendRelation(Integer userId, Integer friendId) {
+        return this.lambdaQuery().eq(UserRelation::getUserId, userId)
+                .eq(UserRelation::getFriendId, friendId).last("limit 1").one();
+    }
+
     @Override
     public List<FriendListVo> listAllFriendInfo(String username) {
         User user = userService.getUserByName(username);
@@ -45,8 +54,18 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelationMapper,
     }
 
     @Override
-    public FriendListVo getFriendInfo(Integer userId,Integer friendId) {
+    public FriendListVo getFriendInfo(Integer userId, Integer friendId) {
         return mapper.getFriendInfo(userId, friendId);
+    }
+
+    @Override
+    public FriendListVo getFriendInfoByUsername(String username) {
+        User user = userService.getUserByName(SecurityUtils.getUsername());
+        User friend = userService.getUserByName(username);
+        if (friend == null) {
+            throw new DateNoneException("好友不存在");
+        }
+        return getFriendInfo(user.getId(), friend.getId());
     }
 
     @Override
@@ -89,6 +108,26 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelationMapper,
         friendInfoMapper.insert(receiveFriendInfo);
 
         return true;
+    }
+
+    @Override
+    public Boolean updateFriendInfo(UpdateFriendVo updateFriendVo) {
+        User user = userService.getUserByName(SecurityUtils.getUsername());
+        User friend = userService.getUserByName(updateFriendVo.getUsername());
+        if (friend == null) {
+            throw new DateNoneException("好友不存在");
+        }
+        FriendInfo friendInfo = friendInfoMapper.getFriendInfoByUser(user.getId(), friend.getId());
+        if (friendInfo == null) {
+            throw new DateNoneException("好友不存在");
+        }
+        if (CharSequenceUtil.isNotBlank(updateFriendVo.getRemark())) {
+            friendInfo.setRemark(updateFriendVo.getRemark());
+        }
+        if (updateFriendVo.getNotDisturb() != null) {
+            friendInfo.setNotDisturb(updateFriendVo.getNotDisturb());
+        }
+        return friendInfoMapper.updateById(friendInfo) == 1;
     }
 
 }

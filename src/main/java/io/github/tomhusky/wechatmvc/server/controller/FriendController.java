@@ -1,11 +1,13 @@
 package io.github.tomhusky.wechatmvc.server.controller;
 
 import io.github.tomhusky.wechatmvc.server.common.JsonResult;
+import io.github.tomhusky.wechatmvc.server.security.SecurityUtils;
 import io.github.tomhusky.wechatmvc.server.service.base.FriendApplyService;
 import io.github.tomhusky.wechatmvc.server.service.base.UserRelationService;
 import io.github.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
 import io.github.tomhusky.wechatmvc.server.vo.query.FriendListVo;
 import io.github.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;
+import io.github.tomhusky.wechatmvc.server.vo.update.UpdateFriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,20 +32,28 @@ public class FriendController {
 
     /**
      * 获取用户好友列表信息
+     */
+    @GetMapping("/listFriendInfo")
+    public JsonResult<List<FriendListVo>> listFriendInfo() {
+        return JsonResult.success(userRelationService.listAllFriendInfo(SecurityUtils.getUsername()));
+    }
+
+    /**
+     * 获取好友信息
      *
      * @param username 用户名
      */
-    @GetMapping("/listFriendInfo")
-    public JsonResult<List<FriendListVo>> listFriendInfo(@RequestParam String username) {
-        return JsonResult.success(userRelationService.listAllFriendInfo(username));
+    @GetMapping("/getFriendInfo")
+    public JsonResult<FriendListVo> getFriendInfoByUsername(@RequestParam String username) {
+        return JsonResult.success(userRelationService.getFriendInfoByUsername(username));
     }
 
     /**
      * 更新好友信息
      */
     @PostMapping("/updateFriendInfo")
-    public JsonResult<Boolean> updateFriendInfo(@RequestBody @Valid AddFriendVo userVo) {
-        return JsonResult.success(friendApplyService.applyAddFriend(userVo));
+    public JsonResult<Boolean> updateFriendInfo(@RequestBody @Valid UpdateFriendVo userVo) {
+        return JsonResult.success(userRelationService.updateFriendInfo(userVo));
     }
 
     /**
