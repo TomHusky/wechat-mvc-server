@@ -1,21 +1,20 @@
 package io.github.tomhusky.wechatmvc.server.session.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import io.github.tomhusky.wechatmvc.server.common.JsonResult;
-import io.github.tomhusky.wechatmvc.server.common.enums.MsgUrlType;
-import io.github.tomhusky.wechatmvc.server.service.base.GroupChatService;
-import io.github.tomhusky.wechatmvc.server.session.OnlineUserManage;
-import io.github.tomhusky.wechatmvc.server.session.UserSessionDetail;
-import io.github.tomhusky.wechatmvc.server.common.enums.MsgType;
-import io.github.tomhusky.wechatmvc.server.session.vo.ReceiveMsgVo;
-import io.github.tomhusky.wechatmvc.server.session.vo.SendMsgVo;
-import io.github.tomhusky.wechatmvc.server.vo.query.GroupUserDetail;
 import io.github.tomhusky.websocket.annotation.SocketController;
 import io.github.tomhusky.websocket.annotation.SocketRequestMapping;
 import io.github.tomhusky.websocket.context.WebSocketContext;
 import io.github.tomhusky.websocket.context.WebSocketContextHolder;
+import io.github.tomhusky.wechatmvc.server.common.JsonResult;
+import io.github.tomhusky.wechatmvc.server.common.enums.MsgType;
+import io.github.tomhusky.wechatmvc.server.common.enums.MsgUrlType;
+import io.github.tomhusky.wechatmvc.server.service.base.GroupChatService;
+import io.github.tomhusky.wechatmvc.server.session.OnlineUserManage;
+import io.github.tomhusky.wechatmvc.server.session.UserSessionDetail;
+import io.github.tomhusky.wechatmvc.server.session.vo.ReceiveMsgVo;
+import io.github.tomhusky.wechatmvc.server.session.vo.SendMsgVo;
+import io.github.tomhusky.wechatmvc.server.vo.query.GroupUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
