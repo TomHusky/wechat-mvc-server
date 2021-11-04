@@ -1,10 +1,12 @@
 file:
-  rootPath: D:\\mnt\\docker\\nginx\\www\\wechat\\
+  rootPath: /var/local/wechat/
   baseUrl: http://y2725078j3.qicp.vip/wechat/
+  groupPath: nocache/img/group/
+  groupUrl: nocache/img/group/
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/wechat_mvc?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://mysql:3306/wechat_mvc_test?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: admin123
     type: com.zaxxer.hikari.HikariDataSource

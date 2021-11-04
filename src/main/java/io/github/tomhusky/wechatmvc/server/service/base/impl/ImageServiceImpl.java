@@ -33,27 +33,32 @@ public class ImageServiceImpl implements ImageService {
     @Value("${file.baseUrl}")
     private String baseUrl;
 
-    private static final String GROUP_IMG = "nocache\\img\\group\\";
+    @Value("${file.groupPath}")
+    private String groupPath;
+
+    @Value("${file.groupUrl}")
+    private String groupUrl;
+
 
     @Override
     public String saveImg(String fileName, File file) {
-        File saveFile = new File(rootPath + "img\\" + fileName);
+        File saveFile = new File(rootPath + "img" + File.separator + fileName);
         if (!saveFile.exists()) {
             FileUtil.touch(saveFile);
         }
         FileUtil.copy(file, saveFile, true);
-        return baseUrl + "img/" + fileName;
+        return baseUrl + File.separator + fileName;
     }
 
     @Override
     public String saveImg(String fileName, BufferedImage img) {
-        ImageUtils.generateWaterFile(img, rootPath + "\\img\\" + fileName);
-        return baseUrl + "img/" + fileName;
+        ImageUtils.generateWaterFile(img, rootPath + "img" + File.separator + fileName);
+        return baseUrl + "img" + File.separator + fileName;
     }
 
     @Override
     public String getGroupAvatar(List<String> images, String groupNo) {
-        String fileUrl = baseUrl + "nocache/img/group/";
+        String fileUrl = baseUrl + groupUrl;
         if (images.size() <= 4) {
             fileUrl = fileUrl + composeFour(images, groupNo);
         } else if (images.size() <= 6) {
@@ -65,7 +70,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String composeFour(List<String> images, String groupNo) {
-        String filePath = rootPath + GROUP_IMG + groupNo + ".jpg";
+        String filePath = rootPath + groupPath + groupNo + ".jpg";
         String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
@@ -100,7 +105,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String composeSix(List<String> images, String groupNo) {
-        String filePath = rootPath + GROUP_IMG + groupNo + ".jpg";
+        String filePath = rootPath + groupPath + groupNo + ".jpg";
         String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();
@@ -135,7 +140,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String composeNine(List<String> images, String groupNo) {
-        String filePath = rootPath + GROUP_IMG + groupNo + ".jpg";
+        String filePath = rootPath + groupPath + groupNo + ".jpg";
         String fileName = groupNo + ".jpg";
         try {
             List<ImageUtils.PressImgVO> pressImgVOList = new ArrayList<>();

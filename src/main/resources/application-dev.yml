@@ -1,6 +1,8 @@
 file:
   rootPath: D:\\mnt\\docker\\nginx\\www\\wechat\\
   baseUrl: http://127.0.0.1/wechat/
+  groupPath: nocache\\img\\group\\
+  groupUrl: nocache/img/group/
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

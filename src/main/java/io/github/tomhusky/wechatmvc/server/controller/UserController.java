@@ -1,19 +1,17 @@
 package io.github.tomhusky.wechatmvc.server.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import io.github.tomhusky.wechatmvc.server.common.JsonResult;
 import io.github.tomhusky.wechatmvc.server.entity.User;
 import io.github.tomhusky.wechatmvc.server.service.base.GroupChatService;
-import io.github.tomhusky.wechatmvc.server.common.JsonResult;
 import io.github.tomhusky.wechatmvc.server.service.base.UserRelationService;
 import io.github.tomhusky.wechatmvc.server.service.base.UserService;
 import io.github.tomhusky.wechatmvc.server.vo.query.GroupChatListVo;
 import io.github.tomhusky.wechatmvc.server.vo.query.SelectUserVo;
-import io.github.tomhusky.wechatmvc.server.vo.update.UpdateFriendVo;
 import io.github.tomhusky.wechatmvc.server.vo.update.UpdateUserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
