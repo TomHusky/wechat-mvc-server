@@ -18,6 +18,11 @@ public class AccountInfo implements Serializable {
     private String token;
 
     /**
+     * 用户id
+     */
+    private Integer userId;
+
+    /**
      * 用户名
      */
     private String username;

@@ -31,10 +31,10 @@ public class BaseServiceImpl<M extends CommonMapper<T>, T> extends ServiceImpl<M
         if (entityList.size() > DEFAULT_BATCH_SIZE) {
             List<List<T>> splitList = CollectionUtil.split(allList, DEFAULT_BATCH_SIZE);
             for (List<T> list : splitList) {
-                size += mapper.insertBatchSomeColumn(list);
+                size += mapper.insertList(list);
             }
         } else {
-            size = mapper.insertBatchSomeColumn(entityList);
+            size = mapper.insertList(entityList);
         }
         return size == entityList.size();
     }

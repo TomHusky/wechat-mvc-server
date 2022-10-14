@@ -5,7 +5,7 @@
          debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
     -->
     <springProperty scop="context" name="spring.application.name" source="spring.application.name" defaultValue="app"/>
-    <property name="LOG_HOME" value="logs/${spring.application.name}"/>
+    <property name="LOG_HOME" value="logs"/>
 
     <!-- root日志会输出到catalina日志中，默认应用是不需要设置。  -->
     <!-- 错误日志路径 -->
@@ -157,7 +157,7 @@
             <appender-ref ref="FILE-INFO-ASYNC"/>
             <appender-ref ref="FILE-DEBUG-ASYNC"/>
         </logger>
-        <logger name="com.tomhusky" level="INFO" additivity="false">
+        <logger name="io.github.tomhusky" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE-ASYNC"/>
             <appender-ref ref="FILE-ERROR-ASYNC"/>
             <appender-ref ref="FILE-INFO-ASYNC"/>
@@ -190,7 +190,7 @@
             <appender-ref ref="FILE-INFO-ASYNC"/>
             <appender-ref ref="FILE-DEBUG-ASYNC"/>
         </logger>
-        <logger name="com.tomhusky" level="INFO" additivity="false">
+        <logger name="io.github.tomhusky" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE-ASYNC"/>
             <appender-ref ref="FILE-ERROR-ASYNC"/>
             <appender-ref ref="FILE-INFO-ASYNC"/>
@@ -218,7 +218,7 @@
             <appender-ref ref="FILE-ERROR-ASYNC"/>
             <appender-ref ref="FILE-INFO-ASYNC"/>
         </logger>
-        <logger name="com.tomhusky" level="INFO" additivity="false">
+        <logger name="io.github.tomhusky" level="INFO" additivity="false">
             <appender-ref ref="FILE-ERROR-ASYNC"/>
             <appender-ref ref="FILE-INFO-ASYNC"/>
         </logger>

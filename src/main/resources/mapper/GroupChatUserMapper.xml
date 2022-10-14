@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.tomhusky.wechatmvc.server.mapper.GroupChatUserMapper">
-
-
+    <select id="listGroupChatUser" resultType="io.github.tomhusky.wechatmvc.server.entity.User">
+        select su.*
+        from group_chat gc
+                 left join group_chat_user gcu on gc.group_no = gcu.group_no
+                 left join sys_user su on su.id = gcu.user_id
+        where gc.deleted = 0
+          and gc.group_no = #{groupNo}
+        order by gcu.create_time
+    </select>
 </mapper>

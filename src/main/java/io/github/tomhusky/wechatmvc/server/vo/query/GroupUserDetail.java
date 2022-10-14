@@ -53,4 +53,9 @@ public class GroupUserDetail {
      * 地址
      */
     private String area;
+
+    /**
+     * 群成员昵称
+     */
+    private String groupNickname;
 }

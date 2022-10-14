@@ -55,12 +55,12 @@ public class SourceServiceImpl implements SourceService {
             String name = IdUtil.simpleUUID();
             String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf('.'));
             BufferedImage sourceImg = ImageIO.read(file.getInputStream());
-            if (".gif".equalsIgnoreCase(fileType)){
+            if (".gif".equalsIgnoreCase(fileType)) {
                 reqFile = File.createTempFile(name, fileType);
                 out = new FileOutputStream(reqFile);
                 IoUtil.copy(file.getInputStream(), out);
                 resultMap.put("url", imageService.saveImg(reqFile.getName(), reqFile));
-            } else if(".png".equalsIgnoreCase(fileType)) {
+            } else if (".png".equalsIgnoreCase(fileType)) {
                 BufferedImage bufferedImage = PngCompressUtils.compressPng(sourceImg);
                 resultMap.put("url", imageService.saveImg(name + fileType, bufferedImage));
             } else {
@@ -101,10 +101,12 @@ public class SourceServiceImpl implements SourceService {
 
     @Override
     public Map<String, String> listSystemIconBase64() {
-        String[] extensions = {".txt", ".html", ".pdf", ".xlsx", ".docx", ".pptx", ".exe", ".java"};
+        String[] extensions = {".txt", ".html", ".pdf", ".xlsx", ".docx", ".pptx", ".exe", ".java", ".zip", ".rar", ".json"};
         Map<String, String> iconList = new HashMap<>();
         for (String extension : extensions) {
             BufferedImage imageByFileType = SystemIconUtil.getImageByFileType(extension);
+
+            ImageUtils.generateWaterFile(imageByFileType, "D:\\tool\\system-icon\\" + extension.substring(1) + extension);
             if (imageByFileType != null) {
                 iconList.put(extension, "data:image/png;base64," + ImageUtils.base64(imageByFileType, "png"));
             }

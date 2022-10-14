@@ -11,6 +11,7 @@
                u.signature,
                u.sex,
                u.wxid,
+               u.id as user_id,
                ac.password
         from sys_user u
                      left join sys_account ac on u.username = ac.username

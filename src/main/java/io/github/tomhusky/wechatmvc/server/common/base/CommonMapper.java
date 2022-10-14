@@ -21,10 +21,10 @@ public interface CommonMapper<T> extends BaseMapper<T> {
     /**
      * 批量插入（mysql）
      *
-     * @param entityList 实体类对象集合
+     * @param list 实体类对象集合
      * @return 受影响的行数
      */
-    Integer insertBatchSomeColumn(Collection<T> entityList);
+    Integer insertList(Collection<T> list);
 
     /**
      * 分页查询

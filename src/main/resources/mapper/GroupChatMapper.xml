@@ -9,7 +9,8 @@
                su.nickname,
                su.username,
                su.area,
-               gcu.type
+               gcu.type,
+               gcu.nickname as groupNickname
         from group_chat gc
                      left join group_chat_user gcu on gc.group_no = gcu.group_no
                      left join sys_user su on su.id = gcu.user_id
@@ -23,6 +24,7 @@
                      left join group_chat_user gcu
                 on gc.group_no = gcu.group_no
         where gc.deleted = 0
+          and gcu.deleted = 0
           and gcu.user_id = #{userId}
     </select>
 </mapper>
