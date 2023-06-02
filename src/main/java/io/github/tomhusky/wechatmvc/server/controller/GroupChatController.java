@@ -53,6 +53,9 @@ public class GroupChatController {
         return JsonResult.success(groupChatService.listGroupChat(SecurityUtils.getUsername()));
     }
 
+    /**
+     * 退出群聊
+     */
     @PostMapping("/deleteChatUser")
     public JsonResult<String> deleteChatUser(@RequestParam String groupNo) {
         boolean deleteChat = groupChatService.userDeleteChat(groupNo, SecurityUtils.getUsername());

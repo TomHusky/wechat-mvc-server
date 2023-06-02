@@ -4,15 +4,17 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.IdUtil;
 import io.github.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
+import io.github.tomhusky.wechatmvc.server.common.exception.OperateException;
 import io.github.tomhusky.wechatmvc.server.common.exception.RoleException;
+import io.github.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import io.github.tomhusky.wechatmvc.server.entity.Account;
+import io.github.tomhusky.wechatmvc.server.entity.FriendApply;
 import io.github.tomhusky.wechatmvc.server.entity.User;
 import io.github.tomhusky.wechatmvc.server.mapper.AccountMapper;
 import io.github.tomhusky.wechatmvc.server.service.base.AccountService;
+import io.github.tomhusky.wechatmvc.server.service.base.UserRelationService;
 import io.github.tomhusky.wechatmvc.server.service.base.UserService;
 import io.github.tomhusky.wechatmvc.server.vo.AccountInfo;
-import io.github.tomhusky.wechatmvc.server.common.exception.OperateException;
-import io.github.tomhusky.wechatmvc.server.common.exception.constant.ExceptionCode;
 import io.github.tomhusky.wechatmvc.server.vo.add.AddAccountVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +38,9 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountMapper, Account> 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private UserRelationService userRelationService;
+
     @Override
     public Integer addAccount(AddAccountVo addAccountVo) {
         // 校验邮箱存在
@@ -56,6 +61,8 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountMapper, Account> 
             user.setWxid(account.getUsername() + IdUtil.nanoId(4));
             BeanUtil.copyProperties(addAccountVo, user);
             userService.addUser(user);
+            // 添加默认好友
+            this.addDefaultFriend(user);
         }
         return userService.count();
     }
@@ -80,6 +87,15 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountMapper, Account> 
         account.setUsername(username);
         account.setPassword(bCryptPasswordEncoder.encode(newPassword));
         return account.updateById();
+    }
+
+
+    private void addDefaultFriend(User user) {
+        FriendApply apply = new FriendApply();
+        apply.setApplyUser(user.getUsername());
+        apply.setReceiveUser("1677900582");
+        apply.setOrigin("系统默认");
+        userRelationService.addFriend(apply);
     }
 
 }

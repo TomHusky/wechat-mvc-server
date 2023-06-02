@@ -140,7 +140,7 @@
         <dependency>
             <groupId>io.github.tomhusky</groupId>
             <artifactId>websocket-mvc-springboot-starter</artifactId>
-            <version>1.0.3</version>
+            <version>1.2.0</version>
         </dependency>
     </dependencies>
 

@@ -2,14 +2,14 @@ package io.github.tomhusky.wechatmvc.server.service.base.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
-import io.github.tomhusky.wechatmvc.server.common.exception.DateNoneException;
-import io.github.tomhusky.wechatmvc.server.entity.User;
 import io.github.tomhusky.wechatmvc.server.common.JsonResult;
 import io.github.tomhusky.wechatmvc.server.common.base.BaseServiceImpl;
 import io.github.tomhusky.wechatmvc.server.common.enums.ApplyStatus;
 import io.github.tomhusky.wechatmvc.server.common.enums.MsgUrlType;
+import io.github.tomhusky.wechatmvc.server.common.exception.DateNoneException;
 import io.github.tomhusky.wechatmvc.server.common.exception.OperateException;
 import io.github.tomhusky.wechatmvc.server.entity.FriendApply;
+import io.github.tomhusky.wechatmvc.server.entity.User;
 import io.github.tomhusky.wechatmvc.server.mapper.FriendApplyMapper;
 import io.github.tomhusky.wechatmvc.server.security.SecurityUtils;
 import io.github.tomhusky.wechatmvc.server.service.base.FriendApplyService;
@@ -20,7 +20,6 @@ import io.github.tomhusky.wechatmvc.server.vo.add.AddFriendVo;
 import io.github.tomhusky.wechatmvc.server.vo.msg.AddFriendMsg;
 import io.github.tomhusky.wechatmvc.server.vo.query.FriendListVo;
 import io.github.tomhusky.wechatmvc.server.vo.update.FriendApplyUpdate;
-import io.github.tomhusky.wechatmvc.server.vo.update.UpdateFriendVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +48,9 @@ public class FriendApplyServiceImpl extends BaseServiceImpl<FriendApplyMapper, F
 
     @Autowired
     private UserRelationService userRelationService;
+
+    @Autowired
+    private OnlineUserManage onlineUserManage;
 
     @Override
     public boolean sendAllFriendApplyMsg(String username) {
@@ -81,7 +83,7 @@ public class FriendApplyServiceImpl extends BaseServiceImpl<FriendApplyMapper, F
 
         this.save(friendApply);
 
-        if (OnlineUserManage.isOnline(username)) {
+        if (onlineUserManage.isOnline(username)) {
             friendApply.setStatus(ApplyStatus.APPLYING.getValue());
             sendMsg(Collections.singletonList(friendApply), friendApply.getReceiveUser());
         }
@@ -98,7 +100,7 @@ public class FriendApplyServiceImpl extends BaseServiceImpl<FriendApplyMapper, F
             addFriendMsg.setStatus(friendApply.getStatus());
             addFriendMsgList.add(addFriendMsg);
         }
-        OnlineUserManage.sendMessages(MsgUrlType.NEW_FRIEND_MSG.getUrl(), username, JsonResult.success(addFriendMsgList));
+        onlineUserManage.sendMessages(MsgUrlType.NEW_FRIEND_MSG.getUrl(), username, JsonResult.success(addFriendMsgList));
     }
 
     @Override
@@ -124,8 +126,8 @@ public class FriendApplyServiceImpl extends BaseServiceImpl<FriendApplyMapper, F
         }
         FriendListVo applyUser = userRelationService.getFriendInfo(user.getId(), friend.getId());
         FriendListVo receiveUser = userRelationService.getFriendInfo(friend.getId(), user.getId());
-        OnlineUserManage.sendMessages(MsgUrlType.ADD_FRIEND_MSG.getUrl(), friendApply.getApplyUser(), JsonResult.success(applyUser));
-        OnlineUserManage.sendMessages(MsgUrlType.ADD_FRIEND_MSG.getUrl(), friendApply.getReceiveUser(), JsonResult.success(receiveUser));
+        onlineUserManage.sendMessages(MsgUrlType.ADD_FRIEND_MSG.getUrl(), friendApply.getApplyUser(), JsonResult.success(applyUser));
+        onlineUserManage.sendMessages(MsgUrlType.ADD_FRIEND_MSG.getUrl(), friendApply.getReceiveUser(), JsonResult.success(receiveUser));
     }
 
 }

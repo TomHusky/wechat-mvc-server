@@ -35,6 +35,9 @@ public class MassageController {
     @Autowired
     private GroupChatService groupChatService;
 
+    @Autowired
+    private OnlineUserManage onlineUserManage;
+
     @SocketRequestMapping("/send")
     public JsonResult<String> sendMsg(@Valid SendMsgVo sendMsgVo) {
         WebSocketContext context = WebSocketContextHolder.getContext();
@@ -52,7 +55,7 @@ public class MassageController {
         ReceiveMsgVo receiveMsgVo = BeanUtil.copyProperties(sendMsgVo, ReceiveMsgVo.class);
         receiveMsgVo.setSendId(sessionDetail.getUsername());
         receiveMsgVo.setUsername(sessionDetail.getUsername());
-        OnlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), sendMsgVo.getReceiveId(), JsonResult.success(receiveMsgVo));
+        onlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), sendMsgVo.getReceiveId(), JsonResult.success(receiveMsgVo));
 
     }
 
@@ -66,7 +69,7 @@ public class MassageController {
             ReceiveMsgVo receiveMsgVo = BeanUtil.copyProperties(sendMsgVo, ReceiveMsgVo.class);
             receiveMsgVo.setSendId(sendMsgVo.getReceiveId());
             receiveMsgVo.setUsername(sessionDetail.getUsername());
-            OnlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), groupUserDetail.getUsername(), JsonResult.success(receiveMsgVo));
+            onlineUserManage.sendMessages(MsgUrlType.CHAT_MSG.getUrl(), groupUserDetail.getUsername(), JsonResult.success(receiveMsgVo));
         }
     }
 }

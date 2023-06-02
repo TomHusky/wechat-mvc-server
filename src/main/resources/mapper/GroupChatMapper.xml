@@ -13,8 +13,8 @@
                gcu.nickname as groupNickname
         from group_chat gc
                      left join group_chat_user gcu on gc.group_no = gcu.group_no
-                     left join sys_user su on su.id = gcu.user_id
-        where gc.deleted = 0
+                     left join sys_user su on su.id = gcu.user_id and su.deleted = 0
+        where gc.deleted = 0 and gcu.deleted = 0
           and gc.group_no = #{groupNo}
     </select>
 

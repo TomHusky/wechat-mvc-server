@@ -1,14 +1,12 @@
 package io.github.tomhusky.wechatmvc.server.session;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
-import io.github.tomhusky.websocket.SocketSessionManager;
+import io.github.tomhusky.websocket.SocketSendMsgManager;
 import io.github.tomhusky.websocket.bean.SocketResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -20,54 +18,57 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.0
  * @since 2021/9/24 11:44
  */
+@Component
 @Slf4j
 public class OnlineUserManage {
 
-    private static final Map<String, String> WEB_SOCKET_SESSION_MAP = new ConcurrentHashMap<>();
+    private final StringRedisTemplate redisTemplate;
+    private static final ConcurrentHashMap<String, String> WEB_SOCKET_SESSION_MAP = new ConcurrentHashMap<>();
 
-    private OnlineUserManage() {
+    private static final String KEY_PREFIX = "online:";
+
+    public OnlineUserManage(StringRedisTemplate stringRedisTemplate) {
+        this.redisTemplate = stringRedisTemplate;
     }
 
-    public static synchronized void add(String username, String sessionId) {
-        WEB_SOCKET_SESSION_MAP.computeIfAbsent(username, k -> sessionId);
+    public synchronized void add(String username, String sessionId) {
+        redisTemplate.opsForValue().setIfAbsent(KEY_PREFIX + username, sessionId);
+        WEB_SOCKET_SESSION_MAP.put(sessionId, username);
     }
 
-    public static String remove(String username) {
-        String sessionId = WEB_SOCKET_SESSION_MAP.get(username);
-        WEB_SOCKET_SESSION_MAP.remove(username);
+    public String remove(String username) {
+        String sessionId = redisTemplate.opsForValue().get(KEY_PREFIX + username);
+        if (sessionId != null) {
+            redisTemplate.delete(KEY_PREFIX + username);
+            WEB_SOCKET_SESSION_MAP.remove(sessionId);
+        }
         return sessionId;
     }
 
-    public static synchronized void removeAllSessionId(String sessionId) {
-        Collection<String> col = WEB_SOCKET_SESSION_MAP.values();
-        while (col.contains(sessionId)) {
-            col.remove(sessionId);
+    public synchronized void removeAllSessionId(String sessionId) {
+        String username = WEB_SOCKET_SESSION_MAP.get(sessionId);
+        if (username != null) {
+            redisTemplate.delete(KEY_PREFIX + username);
         }
     }
 
-    public static String get(String username) {
-        return WEB_SOCKET_SESSION_MAP.get(username);
+    public String getKey(String sessionId) {
+        return WEB_SOCKET_SESSION_MAP.get(sessionId);
     }
 
-    public static boolean isOnline(String username) {
-        return WEB_SOCKET_SESSION_MAP.containsKey(username);
+    public String get(String username) {
+        return redisTemplate.opsForValue().get(KEY_PREFIX + username);
     }
 
-    public static String getKey(String value) {
-        Set<Map.Entry<String, String>> entries = WEB_SOCKET_SESSION_MAP.entrySet();
-        for (Map.Entry<String, String> entry : entries) {
-            if (entry.getValue().equals(value)) {
-                return entry.getKey();
-            }
-        }
-        return null;
+    public Boolean isOnline(String username) {
+        return redisTemplate.hasKey(KEY_PREFIX + username);
     }
 
-    public static <T> boolean sendMessages(String address,String username, T data) {
-        String sessionId = WEB_SOCKET_SESSION_MAP.get(username);
+
+    public <T> void sendMessages(String address, String username, T data) {
+        String sessionId = this.get(username);
         if (CharSequenceUtil.isNotBlank(sessionId)) {
-            return SocketSessionManager.sendMessages(sessionId, SocketResult.build(data, address));
+            SocketSendMsgManager.sendMessages(sessionId, SocketResult.build(data, address));
         }
-        return false;
     }
 }

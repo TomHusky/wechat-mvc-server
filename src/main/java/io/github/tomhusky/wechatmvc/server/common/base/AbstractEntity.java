@@ -52,4 +52,11 @@ public abstract class AbstractEntity<T extends Model<?>> extends Model<T> implem
         this.updateTime = updateTime;
     }
 
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
 }

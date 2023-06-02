@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailVerCode(String receiver, String verCode) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-        message.setSubject("验证码");
+        message.setSubject("YouChat验证码");
         message.setText("尊敬的用户,您好:<br/>"
                 + "<br/>本次请求的邮件验证码为:<H2 style=\"color:#3390FF;\"><br/>" + verCode + "</H2><br/>本验证码5分钟内有效，请及时输入。（请勿泄露此验证码）<br/>"
                 + "<br/>如非本人操作，请忽略该邮件。<br/>(这是一封自动发送的邮件，请不要直接回复）", true);

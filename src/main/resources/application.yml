@@ -14,7 +14,7 @@ spring:
     name: wechat-mvc
   mail:
     username: luo.wenjie@foxmail.com
-    password: wcurflpctejtcdjh
+    password: iufklnyicrqgcdja
     host: smtp.qq.com
 
 mybatis-plus:
